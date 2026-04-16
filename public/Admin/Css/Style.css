@@ -65,7 +65,10 @@ body {
   top: 60px;
   left: 0;
   padding-top: 16px;
+  display: flex;
+  flex-direction: column;
 }
+
 
 .sidebar a {
   display: flex;
@@ -147,4 +150,414 @@ body {
 /* ================= TEXT ================= */
 .card-box {
   color: var(--text);
+}
+/* =========================
+   USERS MODULE
+========================= */
+
+/* =========================
+   USER VIEW PAGE
+========================= */
+
+.User-view-wrapper {
+  display: grid;
+
+  grid-template-columns: 280px 1fr;
+
+  gap: 40px;
+
+  margin-top: 20px;
+}
+
+/* AVATAR BLOCK */
+
+.User-avatar-section {
+  text-align: center;
+
+  background: var(--bg);
+
+  padding: 30px;
+
+  border-radius: 14px;
+}
+
+.User-avatar-large {
+  width: 120px;
+
+  height: 120px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  margin-bottom: 15px;
+
+  transition: 0.3s;
+}
+
+.User-avatar-large:hover {
+  transform: scale(1.05);
+}
+
+/* INFO GRID */
+
+.User-info-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 25px;
+}
+
+.User-info-item label {
+  font-size: 13px;
+
+  color: var(--muted);
+
+  display: block;
+
+  margin-bottom: 5px;
+}
+
+.User-info-item p {
+  font-size: 15px;
+
+  font-weight: 500;
+
+  color: var(--text);
+
+  margin: 0;
+}
+
+.User-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.User-page-header h2 {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ADD BUTTON */
+
+.User-btn-add {
+  background: var(--primary);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  transition: 0.25s ease;
+  box-shadow: var(--shadow);
+}
+
+.User-btn-add:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+/* TABLE WRAPPER */
+
+.User-table-wrapper {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+/* TABLE */
+
+.User-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.User-admin-table thead {
+  background: var(--bg-2);
+}
+
+.User-admin-table th {
+  padding: 14px;
+  font-size: 14px;
+  text-align: left;
+  color: var(--muted);
+}
+
+.User-admin-table td {
+  padding: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+}
+
+/* ROW HOVER EFFECT */
+
+.User-admin-table tbody tr {
+  transition: 0.2s ease;
+}
+
+.User-admin-table tbody tr:hover {
+  background: var(--bg);
+}
+
+/* ROLE BADGE */
+
+.User-badge-role {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ROLE COLORS */
+
+.User-role-Admin {
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--primary);
+}
+
+.User-role-Staff {
+  background: rgba(249, 115, 22, 0.12);
+  color: var(--accent);
+}
+
+.User-role-Customer {
+  background: rgba(100, 116, 139, 0.15);
+  color: var(--muted);
+}
+
+/* ACTION BUTTONS */
+
+.User-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.User-btn-edit,
+.User-btn-delete {
+  width: 36px;
+  height: 36px;
+
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.25s ease;
+}
+
+/* EDIT BUTTON */
+
+.User-btn-edit {
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.User-btn-edit:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* DELETE BUTTON */
+
+.User-btn-delete {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.User-btn-delete:hover {
+  background: #ef4444;
+  color: white;
+  transform: translateY(-2px);
+}
+/* =========================
+   PRODUCTS MODULE
+========================= */
+
+.Products-card-box {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+/* HEADER */
+
+.Products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.Products-header h4 {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ADD BUTTON */
+
+.Products-btn-add {
+  background: var(--primary);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  text-decoration: none;
+  transition: 0.25s ease;
+  box-shadow: var(--shadow);
+}
+
+.Products-btn-add:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+/* TABLE */
+
+.Products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.Products-table thead {
+  background: var(--bg-2);
+}
+
+.Products-table th {
+  padding: 14px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.Products-table td {
+  padding: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+}
+
+/* ROW HOVER */
+
+.Products-table tbody tr {
+  transition: 0.25s ease;
+}
+
+.Products-table tbody tr:hover {
+  background: var(--bg);
+}
+
+/* IMAGE */
+
+.Products-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+  transition: 0.3s ease;
+}
+
+.Products-image:hover {
+  transform: scale(1.08);
+}
+
+/* PRICE */
+
+.Products-price {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* CATEGORY */
+
+.Products-category {
+  color: var(--muted);
+}
+
+/* STATUS BADGE */
+
+.Products-status {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.Products-status-active {
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+}
+
+/* ACTION BUTTON GROUP */
+
+.Products-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ACTION BUTTON BASE */
+
+.Products-btn-view,
+.Products-btn-edit,
+.Products-btn-delete {
+  width: 36px;
+  height: 36px;
+
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.25s ease;
+}
+
+/* VIEW */
+
+.Products-btn-view {
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.Products-btn-view:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* EDIT */
+
+.Products-btn-edit {
+  background: rgba(249, 115, 22, 0.12);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.Products-btn-edit:hover {
+  background: var(--accent);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* DELETE */
+
+.Products-btn-delete {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--danger);
+  border: none;
+}
+
+.Products-btn-delete:hover {
+  background: #ef4444;
+  color: white;
+  transform: translateY(-2px);
 }
