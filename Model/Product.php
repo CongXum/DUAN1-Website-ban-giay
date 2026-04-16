@@ -26,5 +26,8 @@ class Product  {
         $sth->execute([':id' => $id]);
         return $sth->fetch(PDO::FETCH_ASSOC);
     }
+
+    
+
 }
 ?>

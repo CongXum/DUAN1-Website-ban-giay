@@ -29,4 +29,53 @@ echo "<pre>";
 print_r($list);
 echo "</pre>";
 
+$user = new User($conn);
+$user_update = new User($conn);
+$delete = new User($conn);
+
+
+$delete = $delete->delete("8");
+
+
+//Chuyển trang cho client
+$page = $_GET['page'] ?? 'home';
+
+/* =========================
+   CLIENT ROUTER
+========================= */
+switch ($page) {
+
+    case 'home':
+        include 'Client/View/Pages/Home.php';
+        break;
+
+    case 'cart':
+        include 'Client/View/Pages/Cart.php';
+        break;
+
+    case 'orders':
+        include 'Client/View/Pages/Orders.php';
+        break;
+
+    case 'product-detail':
+        include 'Client/View/Pages/Product/DetailProduct.php';
+        break;
+
+    case 'product-categories':
+        include 'Client/View/Pages/Product/ProductCategories.php';
+        break;
+
+    case 'product-items':
+        include 'Client/View/Pages/Product/ProductItems.php';
+        break;
+
+    default:
+        include 'Client/View/Pages/Home.php';
+        break;
+}
+
+
+
+
+
 ?>

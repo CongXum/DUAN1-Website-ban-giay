@@ -1,6 +1,6 @@
 <?php
 
-class User  {
+class User{
 
 
     protected $table = "users";
@@ -25,5 +25,34 @@ class User  {
         $sth->execute([':id' => $id]);
         return $sth->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function insert( $name, $email, $password, $phone, $address, $created_at, $updated_at){
+
+        $sql =" INSERT INTO $this->table( `name`, `email`, `password`, `phone`, `address`, `created_at`, `updated_at`) 
+        VALUES (?,?,?,?,?,?,?);";
+        $stmt = $this->_connect->prepare($sql);
+        return $stmt->execute([$name, $email, $password, $phone, $address, $created_at, $updated_at]);
+    
+    }
+
+    public function update ($name, $email, $password, $phone, $address ,$created_at ,$updated_at ,$id){
+    
+        $sql = "UPDATE $this->table
+        SET `name`= ? ,`email`= ?,`password`= ?,`phone`= ?,`address`= ?,`created_at`= ?,`updated_at`= ? WHERE `id` = ?;";
+        $stmt = $this->_connect->prepare($sql);
+        return $stmt->execute([$name, $email, $password, $phone, $address ,$created_at ,$updated_at ,$id]);
+
+    }
+
+    public function delete ($id){
+    
+        $sql = "DELETE FROM $this->table WHERE `id` = ?;";
+
+        $stmt = $this->_connect->prepare($sql);
+        return $stmt->execute([$id]);
+    
+    }
 }
+
+    
 ?>
