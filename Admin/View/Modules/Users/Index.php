@@ -1,6 +1,6 @@
 <div class="container-fluid">
 
-    <div class="Products-card-box">
+    <div class="Us-card-box">
 
         <div class="Products-header">
 
@@ -11,6 +11,59 @@
                 + Thêm người dùng
 
             </a>
+
+        </div>
+
+        <div class="Products-toolbar">
+
+
+            <form method="GET" class="Products-filter-form">
+
+                <input type="hidden" name="page" value="users">
+
+
+                <select name="role" class="Products-select">
+
+                    <option value="">-- Vai trò --</option>
+
+                    <option value="admin"
+                        <?= ($_GET['role'] ?? '') == 'admin' ? 'selected' : '' ?>>
+                        Admin
+                    </option>
+
+                    <option value="staff"
+                        <?= ($_GET['role'] ?? '') == 'staff' ? 'selected' : '' ?>>
+                        Staff
+                    </option>
+
+                    <option value="customer"
+                        <?= ($_GET['role'] ?? '') == 'customer' ? 'selected' : '' ?>>
+                        Customer
+                    </option>
+
+                </select>
+
+
+
+                <input
+                    type="text"
+                    name="keyword"
+                    placeholder="Tìm tên hoặc email..."
+                    value="<?= $_GET['keyword'] ?? '' ?>"
+                    class="Products-search-input">
+
+
+
+                <button class="Products-btn-filter">
+
+                    <i class="fa fa-search"></i>
+
+                    Lọc
+
+                </button>
+
+            </form>
+
 
         </div>
 
@@ -37,81 +90,118 @@
 
                 <?php for ($i = 1; $i <= 5; $i++): ?>
 
-                <tr>
+                    <tr>
 
-                    <td><?= $i ?></td>
+                        <td><?= $i ?></td>
 
-                    <td>
+                        <td>
 
-                        <img src="https://via.placeholder.com/60" class="Products-image">
+                            <img src="https://via.placeholder.com/60" class="Products-image">
 
-                    </td>
+                        </td>
 
-                    <td>
+                        <td>
 
-                        Nguyễn Văn <?= $i ?>
+                            Nguyễn Văn <?= $i ?>
 
-                    </td>
+                        </td>
 
-                    <td class="Products-category">
+                        <td class="Products-category">
 
-                        user<?= $i ?>@gmail.com
+                            user<?= $i ?>@gmail.com
 
-                    </td>
+                        </td>
 
-                    <td>
+                        <td>
 
-                        <span class="Products-status Products-status-active">
+                            <span class="Products-status Products-status-active">
 
-                            Admin
+                                Admin
 
-                        </span>
+                            </span>
 
-                    </td>
+                        </td>
 
-                    <td>
+                        <td>
 
-                        <span class="Products-status Products-status-active">
+                            <span class="Products-status Products-status-active">
 
-                            Hoạt động
+                                Hoạt động
 
-                        </span>
+                            </span>
 
-                    </td>
+                        </td>
 
-                    <td>
+                        <td>
 
-                        <div class="Products-actions">
+                            <div class="Products-actions">
 
-                            <a href="?page=view-user&id=<?= $i ?>" class="Products-btn-view">
+                                <a href="?page=view-user&id=<?= $i ?>" class="Products-btn-view">
 
-                                <i class="fa fa-eye"></i>
+                                    <i class="fa fa-eye"></i>
 
-                            </a>
+                                </a>
 
-                            <a href="?page=update-user&id=<?= $i ?>" class="Products-btn-edit">
+                                <a href="?page=update-user&id=<?= $i ?>" class="Products-btn-edit">
 
-                                <i class="fa fa-pen"></i>
+                                    <i class="fa fa-pen"></i>
 
-                            </a>
+                                </a>
 
-                            <button class="Products-btn-delete">
+                                <button class="Products-btn-delete">
 
-                                <i class="fa fa-trash"></i>
+                                    <i class="fa fa-trash"></i>
 
-                            </button>
+                                </button>
 
-                        </div>
+                            </div>
 
-                    </td>
+                        </td>
 
-                </tr>
+                    </tr>
 
                 <?php endfor; ?>
 
             </tbody>
 
         </table>
+
+        <div class="Products-pagination">
+
+
+            <a href="?page=users&p=1"
+                class="Products-page-btn">
+
+                «
+
+            </a>
+
+
+            <?php for ($i = 1; $i <= 5; $i++): ?>
+                <a
+                    href="?page=users
+                    &p=<?= $i ?>
+                    &role=<?= $_GET['role'] ?? '' ?>
+                    &keyword=<?= $_GET['keyword'] ?? '' ?>"
+                    class="Products-page-btn
+                    <?= ($_GET['p'] ?? 1) == $i ? 'active' : '' ?>">
+
+                    <?= $i ?>
+
+                </a>
+
+            <?php endfor; ?>
+
+
+            <a href="?page=users&p=5"
+                class="Products-page-btn">
+
+                »
+
+            </a>
+
+
+        </div>
 
     </div>
 

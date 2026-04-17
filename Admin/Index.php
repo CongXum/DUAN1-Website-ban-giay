@@ -67,12 +67,64 @@ switch($page){
         $categoryController->delete();
         break;
 
-    // ================= MẶC ĐỊNH =================
-    default:
-        echo "<h2>Dashboard</h2>";
-        break;
-}
-?>
+        // Product management
+        case "products":
+            include "View/Modules/Products/Index.php";
+            break;
+
+        case "create-product":
+            include "View/Modules/Products/Create.php";
+            break;
+
+        case "update-product":
+            include "View/Modules/Products/Update.php";
+            break;
+
+        case "view-product":
+            include "View/Modules/Products/View.php";
+            break;
+
+        // Categories management
+
+        case "categories":
+            include "View/Modules/Categories/Index.php";
+            break;
+
+        // Orders management
+
+        case "orders":
+            include "View/Modules/Orders/Index.php";
+            break;
+        case "view-order":
+            include "View/Modules/Orders/View.php";
+            break;
+        case "edit-order":
+            include "View/Modules/Orders/Edit.php";
+            break;
+
+        // Blogs management
+
+        case "blog":
+            include "View/Modules/Blogs/Index.php";
+            break;
+
+        // Comments management
+
+        case "comments":
+            include "View/Modules/Comment/Index.php";
+            break;
+
+        // Settings
+        case "settings":
+            include "View/Modules/Settings/Index.php";
+            break;
+
+        default:
+            include "View/Modules/Dashboard/Index.php";
+            break;
+    }
+
+    ?>
 
 </div>
 
