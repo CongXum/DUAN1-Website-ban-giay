@@ -1,9 +1,5 @@
 <?php
-
-
-class Product
-{
-
+class Product {
 
     protected $table = "products";
     protected $_connect;
@@ -13,75 +9,46 @@ class Product
         $this->_connect = $connect;
     }
 
-    // Lấy tất cả
-    public function getAll()
-    {
-        $sql = "SELECT * FROM $this->table ";
+    public function getAllCategories() {
+        $sql = "SELECT * FROM categories";
         $sth = $this->_connect->prepare($sql);
         $sth->execute();
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Lấy 1 sản phẩm
-    public function getOne($id)
-    {
-        $sql = "SELECT * FROM $this->table WHERE id = :id";
+    public function getAll() {
+        $sql = "SELECT * FROM $this->table";
         $sth = $this->_connect->prepare($sql);
-        $sth->execute([':id' => $id]);
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getOne($id){
+        $sql = "SELECT * FROM $this->table WHERE id = ?";
+        $sth = $this->_connect->prepare($sql);
+        $sth->execute([$id]);
         return $sth->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Hàm này dùng để thêm dữ liệu cho bảng sản phẩm
-     * @param string $name Đây là tên sản phẩm
-     * @param string $description Đây là mô tả sản phẩm
-     * @param string $image Đây là đường dẫn hình ảnh
-     * @param int|float $price Đây là giá có thể truyền 2 kiểu int hoặc float
-     * @param bool $status Đây là trạng thái, truyền bool (true/false)
-     * @return bool
-     */
-    public function insert(string $name, string $description, string $image, int|float $price, bool $status)
-    {
-        $sql = "INSERT INTO {$this->table} (`name`, `description`, `image`, `price`, `status`) 
-            VALUES (?, ?, ?, ?, ?);";
-
-        $stmt = $this->_connect->prepare($sql);
-        return $stmt->execute([$name, $description, $image, $price, $status]);
+    public function insert($title, $qty, $created_at, $images, $description, $price, $category_id){
+        $sql = "INSERT INTO $this->table
+        (title, qty, created_at, images, description, price, category_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sth = $this->_connect->prepare($sql);
+        return $sth->execute([$title, $qty, $created_at, $images, $description, $price, $category_id]);
     }
 
-    /**
-     * Hàm này dùng để cập nhật dữ liệu cho bảng sản phẩm
-     * @param string $name Đây là tên sản phẩm
-     * @param string $description Đây là mô tả sản phẩm
-     * @param string $image Đây là đường dẫn hình ảnh
-     * @param int|float $price Đây là giá có thể truyền 2 kiểu int hoặc float
-     * @param bool $status Đây là trạng thái, truyền bool (true/false)
-     * @param int $id khóa chính
-     * @return bool
-     */
-    public function update(string $name, string $description, string $image, int|float $price, bool $status, int $id)
-    {
-        $sql = "UPDATE {$this->table} SET `name` = ?, `description` = ?, `image` = ?, `price` = ?, `status` = ? 
-            WHERE {$this->table}.`id` = ?;";
-
-        $stmt = $this->_connect->prepare($sql);
-        return $stmt->execute([$name, $description, $image, $price, $status, $id]);
+    public function update($title, $qty, $created_at, $images, $description, $price, $category_id, $id){
+        $sql = "UPDATE $this->table
+        SET title=?, qty=?, created_at=?, images=?, description=?, price=?, category_id=?
+        WHERE id=?";
+        $sth = $this->_connect->prepare($sql);
+        return $sth->execute([$title, $qty, $created_at, $images, $description, $price, $category_id, $id]);
     }
 
-    /**
-     * Hàm này dùng để Xóa dữ liệu cho bảng sản phẩm
-     * @param int $id khóa chính của dữ liệu
-     * @return bool
-     */
-    public function delete(int $id)
-    {
-        $sql = "DELETE FROM products WHERE {$this->table}.`id` = ?;";
-
-        $stmt = $this->_connect->prepare($sql);
-        return $stmt->execute([$id]);
+    public function delete($id){
+        $sql = "DELETE FROM $this->table WHERE id=?";
+        $sth = $this->_connect->prepare($sql);
+        return $sth->execute([$id]);
     }
 }
-?>
-
-
-
