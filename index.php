@@ -1,58 +1,32 @@
 <?php
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 require_once __DIR__ . '/Model/Database.php';
 require_once __DIR__ . '/Model/Product.php';
-require_once __DIR__ . '/Model/Category.php';
-require_once __DIR__ . '/Model/User.php';
-require_once __DIR__ . '/Model/Order.php';
+// require các model khác nếu cần...
 
 $db = new Database();
 $conn = $db->connect();
-
 $product = new Product($conn);
 
-// Lấy 1 sản phẩm
-$data = $product->getOne(1);
+$page = isset($_GET['page']) ? strtolower(trim($_GET['page'])) : 'home';
 
-echo "<pre>";
-print_r($data);
-echo "</pre>";
+include __DIR__ . '/Client/View/Layouts/Header.php';
 
-
-// Lấy tất cả sản phẩm
-$list = $product->getAll();
-
-echo "<pre>";
-print_r($list);
-echo "</pre>";
-
-$user = new User($conn);
-$user_update = new User($conn);
-$delete = new User($conn);
-
-
-$delete = $delete->delete("8");
-
-
-//Chuyển trang cho client
-$page = $_GET['page'] ?? 'home';
-
-/* =========================
-   CLIENT ROUTER
-========================= */
 switch ($page) {
-
-    case 'home':
-        include 'Client/View/Pages/Home.php';
-        break;
-
     case 'cart':
         include 'Client/View/Pages/Cart.php';
         break;
-
+    case 'product':
+        include __DIR__ . '/Client/View/Pages/Product/ProductItems.php';
+        break;
+    case 'contact':
+        include __DIR__ . '/Client/View/Pages/Contact.php';
+        break;
+    case 'home':
+        include __DIR__ . '/Client/View/Pages/Home.php';
+        break;
     case 'orders':
         include 'Client/View/Pages/Orders.php';
         break;
@@ -69,13 +43,11 @@ switch ($page) {
         include 'Client/View/Pages/Product/ProductItems.php';
         break;
 
-    default:
-        include 'Client/View/Pages/Home.php';
-        break;
+        // case 'shop':           // sau này thêm
+        //     include __DIR__ . '/Client/View/Pages/Shop.php';
+        //     break;
+
+
 }
 
-
-
-
-
-?>
+include __DIR__ . '/Client/View/Layouts/Footer.php';
