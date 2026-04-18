@@ -42,6 +42,12 @@ switch ($page) {
     case 'product-items':
         include 'Client/View/Pages/Product/ProductItems.php';
         break;
+    case 'detail':
+    include __DIR__ . '/Client/View/Pages/Product/DetailProduct.php';
+    break;
+case 'order':
+    include __DIR__ . '/Client/View/Pages/Orders.php';
+    break;
 
         // case 'shop':           // sau này thêm
         //     include __DIR__ . '/Client/View/Pages/Shop.php';

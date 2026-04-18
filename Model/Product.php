@@ -51,4 +51,18 @@ class Product {
         $sth = $this->_connect->prepare($sql);
         return $sth->execute([$id]);
     }
+
+    public function getByCategory($category_id) {
+    $sql = "SELECT * FROM $this->table WHERE category_id = ?";
+    $sth = $this->_connect->prepare($sql);
+    $sth->execute([$category_id]);
+    return $sth->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function getCategoryById($id) {
+    $sql = "SELECT * FROM categories WHERE id = ?";
+    $sth = $this->_connect->prepare($sql);
+    $sth->execute([$id]);
+    return $sth->fetch(PDO::FETCH_ASSOC);
+}
 }
