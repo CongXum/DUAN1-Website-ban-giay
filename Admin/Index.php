@@ -52,10 +52,7 @@ switch($page){
         case "view-order":
             include "View/Modules/Orders/View.php";
             break;
-        case "edit-order":
-            include "View/Modules/Orders/Edit.php";
-            break;
-
+        
         // Blogs management
 
         case "blogs":

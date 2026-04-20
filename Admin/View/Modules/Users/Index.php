@@ -136,11 +136,7 @@
 
                             <div class="Products-actions">
 
-                                <a href="?page=view-user&id=<?= $i ?>" class="Products-btn-view">
-
-                                    <i class="fa fa-eye"></i>
-
-                                </a>
+                                
 
                                 <a href="?page=update-user&id=<?= $i ?>" class="Products-btn-edit">
 

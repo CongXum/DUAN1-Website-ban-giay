@@ -144,12 +144,7 @@
                                 </a>
 
 
-                                <a href="?page=edit-order&id=<?= $i ?>"
-                                    class="Order-btn-edit">
-
-                                    <i class="fa fa-pen"></i>
-
-                                </a>
+                                
 
 
                             </div>
