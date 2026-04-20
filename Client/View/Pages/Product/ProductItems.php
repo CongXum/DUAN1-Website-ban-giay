@@ -55,9 +55,9 @@ if ($category_id > 0) {
           <?php foreach ($products as $item): ?>
             <div class="col">
               <div class="card h-100 shadow-sm border-0">
-                <img src="assets/img/product/<?= htmlspecialchars($item['images']) ?>"
+                <img src="public/images/<?= htmlspecialchars($item['images']) ?>"
                      class="card-img-top"
-                     style="height: 180px; object-fit: cover;"
+                     style="height: 300px; object-fit: cover;"
                      alt="<?= htmlspecialchars($item['title']) ?>">
                 <div class="card-body d-flex flex-column p-3">
                   <h6 class="card-title" style="
