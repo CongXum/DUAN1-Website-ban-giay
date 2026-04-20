@@ -10,12 +10,21 @@
     </a>
 
     <a href="?page=categories" class="<?= ($page == 'categories') ? 'active' : '' ?>">
-        <i class="fa fa-list"></i> Quản lý danh mục sản phẩm
+        <i class="fa fa-list"></i> Quản lý danh mục
     </a>
 
     <a href="?page=orders" class="<?= ($page == 'orders') ? 'active' : '' ?>">
         <i class="fa fa-shopping-cart"></i> Quản lý đơn hàng
     </a>
+
+    <a href="?page=blogs" class="<?= ($page == 'blogs') ? 'active' : '' ?>">
+        <i class="fa fa-newspaper"></i> Quản lý bài viết
+    </a>
+
+    <a href="?page=comments" class="<?= ($page == 'comments') ? 'active' : '' ?>">
+        <i class="fa fa-comments"></i> Quản lý bình luận
+    </a>
+
     <a href="?page=settings" class="<?= ($page == 'settings') ? 'active' : '' ?>">
         <i class="fa fa-gear"></i> Cài đặt
     </a>
