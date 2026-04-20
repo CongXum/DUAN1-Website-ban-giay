@@ -1,15 +1,16 @@
-<?php 
+<?php
 // Client/View/Layouts/Header.php
 ?>
 <!doctype html>
 <html class="no-js" lang="zxx">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Duan1 - Giày Thể Thao</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon.ico">
 
     <!-- CSS here -->
@@ -25,6 +26,7 @@
     <link rel="stylesheet" href="/assets/css/nice-select.css">
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
+
 <body>
     <header>
         <!-- Header Start -->
@@ -35,12 +37,12 @@
                         <div class="col-xl-12">
                             <div class="row d-flex justify-content-between align-items-center">
                                 <div class="header-info-left d-flex">
-                                   
+
                                     <ul class="contact-now">
                                         <li>Hotline : +84 123 456 789</li>
                                     </ul>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -64,7 +66,7 @@
                                             <li><a href="index.php?page=contact">Liên hệ</a></li>
                                             <li><a href="index.php?page=product">Sản Phẩm</a></li>
                                             <li><a href="index.php?page=orders">Đơn hàng</a></li>
-                                            
+
                                         </ul>
                                     </nav>
                                 </div>
@@ -86,7 +88,19 @@
                                         </div>
                                     </li>
                                     <li class="d-none d-lg-block">
-                                        <a href="#" class="btn header-btn">Sign in</a>
+                                        <?php if (isset($_SESSION['user'])): ?>
+                                            <div class="header-btn-logged d-flex align-items-center">
+                                                <span class="mr-2">Chào, <strong><?php echo $_SESSION['user']['name']; ?></strong></span>
+                                                <a href="index.php?page=logout" class="logout-icon" title="Đăng xuất">
+                                                    <i class="fas fa-sign-out-alt text-danger"></i>
+                                                </a>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="d-flex align-items-center">
+                                                <a href="index.php?page=login" class="btn header-btn custom-btn">Sign In</a>
+                                                <a href="index.php?page=register" class="btn header-btn custom-btn ml-2" style="background: #fb246a;">Register</a>
+                                            </div>
+                                        <?php endif; ?>
                                     </li>
                                 </ul>
                             </div>
