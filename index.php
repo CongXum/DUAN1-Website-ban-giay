@@ -25,7 +25,10 @@ switch ($page) {
         include __DIR__ . '/Client/View/Pages/Contact.php';
         break;
     case 'home':
-        include __DIR__ . '/Client/View/Pages/Home.php';
+       require_once 'Client/Controller/HomeController.php';
+       $home = new HomeController();
+       $home->index();
+    
         break;
     case 'orders':
         include 'Client/View/Pages/Orders.php';
