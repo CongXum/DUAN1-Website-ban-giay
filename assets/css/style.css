@@ -13026,3 +13026,21 @@ input:focus {
   }
 }
 
+<style>
+    /* Fix cho 2 nút nằm ngang không bị quá to */
+    .custom-btn {
+        padding: 15px 25px !important; /* Giảm padding để nút gọn hơn */
+        line-height: 1 !important;
+        text-transform: capitalize !important; /* Chữ không bị viết hoa toàn bộ */
+        font-size: 14px !important;
+        border-radius: 30px !important; /* Bo tròn cho đẹp */
+        display: inline-block !important;
+        min-width: 100px; /* Độ rộng tối thiểu cho cân đối */
+        text-align: center;
+    }
+
+    /* Khoảng cách lề giữa 2 nút */
+    .ml-2 {
+        margin-left: 10px !important;
+    }
+</style>
