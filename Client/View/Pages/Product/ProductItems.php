@@ -4,9 +4,9 @@ $categories = $product->getAllCategories();
 $category_id = isset($_GET['cat']) ? (int)$_GET['cat'] : 0;
 
 if ($category_id > 0) {
-    $products = $product->getByCategory($category_id);
+  $products = $product->getByCategory($category_id);
 } else {
-    $products = $product->getAll();
+  $products = $product->getAll();
 }
 ?>
 
@@ -21,12 +21,12 @@ if ($category_id > 0) {
         </div>
         <div class="list-group list-group-flush">
           <a href="index.php?page=product"
-             class="list-group-item list-group-item-action <?= $category_id === 0 ? 'active' : '' ?>">
+            class="list-group-item list-group-item-action <?= $category_id === 0 ? 'active' : '' ?>">
             <i class="bi bi-house me-2"></i>Tất cả
           </a>
           <?php foreach ($categories as $cat): ?>
             <a href="index.php?page=product&cat=<?= $cat['id'] ?>"
-               class="list-group-item list-group-item-action <?= $category_id === $cat['id'] ? 'active' : '' ?>">
+              class="list-group-item list-group-item-action <?= $category_id === $cat['id'] ? 'active' : '' ?>">
               <i class="bi bi-tag me-2"></i><?= htmlspecialchars($cat['name']) ?>
             </a>
           <?php endforeach; ?>
@@ -56,9 +56,9 @@ if ($category_id > 0) {
             <div class="col">
               <div class="card h-100 shadow-sm border-0">
                 <img src="public/images/<?= htmlspecialchars($item['images']) ?>"
-                     class="card-img-top"
-                     style="height: 300px; object-fit: cover;"
-                     alt="<?= htmlspecialchars($item['title']) ?>">
+                  class="card-img-top"
+                  style="height: 300px; object-fit: cover;"
+                  alt="<?= htmlspecialchars($item['title']) ?>">
                 <div class="card-body d-flex flex-column p-3">
                   <h6 class="card-title" style="
                     display: -webkit-box;
@@ -74,13 +74,15 @@ if ($category_id > 0) {
                   </p>
                   <div class="mt-auto d-flex gap-2">
                     <a href="index.php?page=detail&id=<?= $item['id'] ?>"
-                       class="btn btn-primary btn-sm flex-fill">
+                      class="btn btn-primary btn-sm flex-fill">
                       <i class="bi bi-eye me-1"></i>Xem
                     </a>
-                    <a href="index.php?page=cart&id=<?= $item['id'] ?>"
-                       class="btn btn-success btn-sm flex-fill">
-                      <i class="bi bi-cart-plus me-1"></i>Thêm
-                    </a>
+                    <form method="post" action="index.php?page=cart&action=add">
+                      <input type="hidden" name="product_id" value="<?= $item['id'] ?>">
+                      <button class="btn btn-success btn-sm">
+                        <i class="bi bi-cart-plus"></i> Thêm
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>
