@@ -21,7 +21,7 @@ $categories = $product->getAllCategories();
           <i class="bi bi-grid-fill me-2"></i>Danh mục
         </div>
         <div class="list-group list-group-flush">
-          <a href="index.php?page=product"
+          <a href="/Client/index.php?page=product"
              class="list-group-item list-group-item-action">
             <i class="bi bi-house me-2"></i>Tất cả
           </a>
@@ -105,7 +105,7 @@ $categories = $product->getAllCategories();
                  class="btn btn-danger btn-lg px-4">
                 <i class="bi bi-bag-check me-2"></i>Đặt hàng ngay
               </a>
-              <a href="index.php?page=product"
+              <a href="/Client/index.php?page=product"
                  class="btn btn-outline-secondary btn-lg px-4">
                 <i class="bi bi-arrow-left me-2"></i>Quay lại
               </a>

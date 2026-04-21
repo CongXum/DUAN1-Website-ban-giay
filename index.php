@@ -22,7 +22,9 @@ $userModel = new User($conn); // Khởi tạo User model
 $page = isset($_GET['page']) ? strtolower(trim($_GET['page'])) : 'home';
 
 /**
+ * ============================
  * ✅ XỬ LÝ LOGIC TRƯỚC
+ * ============================
  */
 switch ($page) {
     case 'login':
@@ -40,9 +42,10 @@ switch ($page) {
         $cartController = new CartController($cartModel);
 
         if (isset($_GET['action']) && $_GET['action'] === 'add') {
-            $cartController->add(); // redirect ở đây OK
+            $cartController->add();
         }
         break;
+
 
     case 'update-cart':
         $cartModel = new Cart($conn);
@@ -50,12 +53,13 @@ switch ($page) {
         $cartController->update();
         break;
 
+
     case 'delete-cart':
         $cartModel = new Cart($conn);
         $cartController = new CartController($cartModel);
-
         $cartController->delete();
         break;
+
 
     case 'place-order':
         $orderModel = new Order($conn);
@@ -65,18 +69,27 @@ switch ($page) {
         $controller->placeOrder();
         break;
 }
+
+
 /**
- * ✅ SAU ĐÓ MỚI LOAD VIEW
+ * ============================
+ * ✅ LOAD HEADER
+ * ============================
  */
 include __DIR__ . '/Client/View/Layouts/Header.php';
 
+
 /**
+ * ============================
  * ✅ HIỂN THỊ GIAO DIỆN
+ * ============================
  */
 switch ($page) {
-    case 'cart':
 
-        $cartController->index();
+    case 'home':
+        require_once 'Client/Controller/HomeController.php';
+        $home = new HomeController();
+        $home->index();
         break;
 
 
@@ -84,25 +97,16 @@ switch ($page) {
         include __DIR__ . '/Client/View/Pages/Product/ProductItems.php';
         break;
 
-    case 'contact':
-        include __DIR__ . '/Client/View/Pages/Contact.php';
+
+    case 'detail':
+        include __DIR__ . '/Client/View/Pages/Product/DetailProduct.php';
         break;
 
-    case 'home':
-        require_once 'Client/Controller/HomeController.php';
-        $home = new HomeController();
-        $home->index();
-        break;
-    
-    case 'orders':
-        $orderModel = new Order($conn);
-        include 'Client/View/Pages/Orders.php';
+
+    case 'cart':
+        $cartController->index();
         break;
 
-    case 'order-detail':
-        $orderModel = new Order($conn);
-        include 'Client/View/Pages/OrderDetail.php';
-        break;
 
     case 'checkout':
         $cartModel = new Cart($conn);
@@ -112,9 +116,7 @@ switch ($page) {
     case 'product-items':
         include 'Client/View/Pages/Product/ProductItems.php';
         break;
-    case 'detail':
-        include __DIR__ . '/Client/View/Pages/Product/DetailProduct.php';
-        break;
+    
     case 'order':
         include __DIR__ . '/Client/View/Pages/Orders.php';
         break;
@@ -123,10 +125,39 @@ switch ($page) {
         //     include __DIR__ . '/Client/View/Pages/Shop.php';
         //     break;
 
+    case 'orders':
+        $orderModel = new Order($conn);
+        include 'Client/View/Pages/Orders.php';
+        break;
+
+
+    case 'order-detail':
+        $orderModel = new Order($conn);
+        include 'Client/View/Pages/OrderDetail.php';
+        break;
+
+
+    case 'contact':
+        include __DIR__ . '/Client/View/Pages/Contact.php';
+        break;
+
 
     case 'success':
-    require_once 'Client/View/Pages/success.php';
-    break;
+        require_once 'Client/View/Pages/success.php';
+        break;
+
+
+    default:
+        require_once 'Client/Controller/HomeController.php';
+        $home = new HomeController();
+        $home->index();
+        break;
 }
 
+
+/**
+ * ============================
+ * ✅ LOAD FOOTER
+ * ============================
+ */
 include __DIR__ . '/Client/View/Layouts/Footer.php';
