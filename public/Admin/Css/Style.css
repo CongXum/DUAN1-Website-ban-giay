@@ -1181,9 +1181,8 @@ body {
 
   gap: 8px;
 }
-.Order-btn-view,
-.Order-btn-edit {
-  width: 36px;
+.Order-btn-view{
+  width: 100%;
 
   height: 36px;
 
@@ -1208,17 +1207,6 @@ body {
 
 .Order-btn-view:hover {
   background: var(--primary);
-
-  color: white;
-}
-.Order-btn-edit {
-  background: rgba(249, 115, 22, 0.12);
-
-  color: var(--accent);
-}
-
-.Order-btn-edit:hover {
-  background: var(--accent);
 
   color: white;
 }

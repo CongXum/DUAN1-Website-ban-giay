@@ -11,8 +11,7 @@
             <input
                 type="text"
                 class="comment-search-input"
-                placeholder="Tìm nội dung bình luận..."
-            >
+                placeholder="Tìm nội dung bình luận...">
 
             <button class="comment-btn-filter">
                 <i class="fa fa-search"></i>
@@ -50,10 +49,6 @@
 
                         <a class="comment-btn-view">
                             <i class="fa fa-eye"></i>
-                        </a>
-
-                        <a class="comment-btn-edit">
-                            <i class="fa fa-pen"></i>
                         </a>
 
                         <button class="comment-btn-delete">
