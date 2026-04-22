@@ -9,13 +9,23 @@ require_once __DIR__ . '/../Model/Database.php';
 require_once __DIR__ . '/../Model/Product.php';
 require_once __DIR__ . '/../Model/Category.php';
 require_once __DIR__ . '/../Model/Order.php';
+require_once __DIR__ . '/../Model/Blogs.php';
+require_once __DIR__ . '/../Model/BlogCategory.php';
+
+// Load controllers
 require_once __DIR__ . '/Controller/OrderController.php';
+require_once __DIR__ . '/Controller/BlogController.php';
+
 
 $db   = new Database();
 $conn = $db->connect();
 
 $productModel  = new Product($conn);
 $categoryModel = new Category($conn);
+$blogModel = new Blog($conn);
+$blogCategoryModel = new BlogCategory($conn);
+
+$blogController = new BlogController($blogModel, $blogCategoryModel);
 
 $page = $_GET['page'] ?? 'dashboard';
 
@@ -229,7 +239,53 @@ include __DIR__ . '/View/Layouts/Sidebar.php';
             $orderController->detail();
             break;
         case 'blogs':
-            include 'View/Modules/Blogs/Index.php';
+            $blogController->index();
+            break;
+
+        case 'create-blog':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $blogController->store($_POST, $_FILES);
+                exit;
+            }
+
+            $blogController->create();
+            break;
+
+        case 'update-blog':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $blogController->update($_POST, $_FILES);
+                exit;
+            }
+
+            if (!isset($_GET['id'])) {
+                $_SESSION['error'] = "Thiếu ID bài viết";
+                header("Location: ?page=blogs");
+                exit;
+            }
+
+            $blogController->edit();
+            break;
+
+
+        case 'delete-blog':
+            if (!isset($_GET['id'])) {
+                $_SESSION['error'] = "Thiếu ID cần xoá";
+                header("Location: ?page=blogs");
+                exit;
+            }
+
+            $blogController->delete();
+            exit;
+
+
+        case 'view-blog':
+            if (!isset($_GET['id'])) {
+                $_SESSION['error'] = "Thiếu ID bài viết";
+                header("Location: ?page=blogs");
+                exit;
+            }
+
+            $blogController->show();
             break;
         case 'comments':
             include 'View/Modules/Comment/Index.php';

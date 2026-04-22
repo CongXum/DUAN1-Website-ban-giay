@@ -18,6 +18,18 @@
     });
 </script>
 
+<script>
+    <?php if (!empty($_SESSION['success'])): ?>
+        toastr.success("<?= $_SESSION['success'] ?>");
+    <?php unset($_SESSION['success']);
+    endif; ?>
+
+    <?php if (!empty($_SESSION['error'])): ?>
+        toastr.error("<?= $_SESSION['error'] ?>");
+    <?php unset($_SESSION['error']);
+    endif; ?>
+</script>
+
 </body>
 
 </html>

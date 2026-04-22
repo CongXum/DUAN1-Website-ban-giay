@@ -38,21 +38,16 @@
                     class="Blog-search-input">
 
 
-                <select name="status"
-                    class="Blog-select">
-
+                <select name="status" class="Blog-select">
                     <option value="">-- Trạng thái --</option>
 
-                    <option value="active"
-                        <?= ($_GET['status'] ?? '') == 'active' ? 'selected' : '' ?>>
+                    <option value="1" <?= ($_GET['status'] ?? '') == '1' ? 'selected' : '' ?>>
                         Hiển thị
                     </option>
 
-                    <option value="hidden"
-                        <?= ($_GET['status'] ?? '') == 'hidden' ? 'selected' : '' ?>>
+                    <option value="0" <?= ($_GET['status'] ?? '') == '0' ? 'selected' : '' ?>>
                         Ẩn
                     </option>
-
                 </select>
 
 
@@ -91,82 +86,63 @@
 
             <tbody>
 
-                <?php for ($i = 1; $i <= 6; $i++): ?>
+                <?php if (!empty($blogs)): ?>
+                    <?php foreach ($blogs as $index => $blog): ?>
 
+                        <tr>
+
+                            <td><?= $offset + $index + 1 ?></td>
+
+                            <td>
+                                <img src="../public/Admin/Img/blogs/<?= $blog['thumbnail'] ?>"
+                                    class="Blog-image">
+                            </td>
+
+                            <td class="Blog-title">
+                                <?= htmlspecialchars($blog['title']) ?>
+                            </td>
+
+                            <td class="Blog-description">
+                                <?= mb_substr(strip_tags($blog['content']), 0, 80) ?>...
+                            </td>
+
+                            <td>
+                                <?php if ($blog['status'] == 1): ?>
+                                    <span class="Blog-status Blog-status-active">Hiển thị</span>
+                                <?php else: ?>
+                                    <span class="Blog-status">Ẩn</span>
+                                <?php endif; ?>
+                            </td>
+
+                            <td>
+                                <div class="Blog-actions">
+
+                                    <a href="?page=view-blog&id=<?= $blog['id'] ?>"
+                                        class="Blog-btn-view">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+
+                                    <a href="?page=update-blog&id=<?= $blog['id'] ?>"
+                                        class="Blog-btn-edit">
+                                        <i class="fa fa-pen"></i>
+                                    </a>
+
+                                    <a href="?page=delete-blog&id=<?= $blog['id'] ?>"
+                                        onclick="return confirm('Xóa bài viết này?')"
+                                        class="Blog-btn-delete">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
                     <tr>
-
-                        <td><?= $i ?></td>
-
-
-                        <td>
-
-                            <img
-                                src="https://picsum.photos/80?random=<?= $i ?>"
-                                class="Blog-image">
-
-                        </td>
-
-
-                        <td class="Blog-title">
-
-                            Top giày thể thao hot <?= $i ?>
-
-                        </td>
-
-
-                        <td class="Blog-description">
-
-                            Xu hướng giày sneaker mới nhất năm 2026 dành cho giới trẻ năng động...
-
-                        </td>
-
-
-                        <td>
-
-                            <span class="Blog-status Blog-status-active">
-
-                                Hiển thị
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <div class="Blog-actions">
-
-
-                                <a href="?page=view-blog&id=<?= $i ?>"
-                                    class="Blog-btn-view">
-
-                                    <i class="fa fa-eye"></i>
-
-                                </a>
-
-
-                                <a href="?page=edit-blog&id=<?= $i ?>"
-                                    class="Blog-btn-edit">
-
-                                    <i class="fa fa-pen"></i>
-
-                                </a>
-
-
-                                <button class="Blog-btn-delete">
-
-                                    <i class="fa fa-trash"></i>
-
-                                </button>
-
-
-                            </div>
-
-                        </td>
-
+                        <td colspan="6" style="text-align:center;">Không có bài viết</td>
                     </tr>
-
-                <?php endfor; ?>
+                <?php endif; ?>
 
             </tbody>
 
@@ -178,7 +154,8 @@
 
         <div class="Blog-pagination">
 
-            <?php for ($i = 1; $i <= 5; $i++): ?>
+            <?php $totalPage = 5;
+            for ($i = 1; $i <= $totalPage; $i++): ?>
 
                 <a
                     href="?page=blogs
