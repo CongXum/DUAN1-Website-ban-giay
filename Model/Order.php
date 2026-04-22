@@ -85,4 +85,72 @@ class Order
         $stmt = $this->_connect->prepare($sql);
         return $stmt->execute([$status, $order_id]);
     }
+
+    public function getAllAdmin($keyword = '', $status = '', $page = 1, $limit = 10)
+    {
+        $sql = "SELECT * FROM orders WHERE 1";
+
+        $params = [];
+
+        // 🔍 search theo mã đơn
+        if (!empty($keyword)) {
+            $sql .= " AND id LIKE ?";
+            $params[] = "%$keyword%";
+        }
+
+        // 🎯 filter status
+        if (!empty($status)) {
+            $sql .= " AND status = ?";
+            $params[] = $status;
+        }
+
+        // 📄 pagination
+        $offset = ($page - 1) * $limit;
+        $sql .= " ORDER BY id DESC LIMIT $limit OFFSET $offset";
+
+        $sth = $this->_connect->prepare($sql);
+        $sth->execute($params);
+
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // 🔢 đếm tổng
+    public function countAllAdmin($keyword = '', $status = '')
+    {
+        $sql = "SELECT COUNT(*) FROM orders WHERE 1";
+        $params = [];
+
+        if (!empty($keyword)) {
+            $sql .= " AND id LIKE ?";
+            $params[] = "%$keyword%";
+        }
+
+        if (!empty($status)) {
+            $sql .= " AND status = ?";
+            $params[] = $status;
+        }
+
+        $sth = $this->_connect->prepare($sql);
+        $sth->execute($params);
+
+        return $sth->fetchColumn();
+    }
+
+    public function getAllPagination($limit, $offset)
+    {
+        $sql = "SELECT * FROM $this->table ORDER BY id DESC LIMIT :limit OFFSET :offset";
+        $sth = $this->_connect->prepare($sql);
+        $sth->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $sth->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function countAll()
+    {
+        $sql = "SELECT COUNT(*) as total FROM $this->table";
+        $sth = $this->_connect->prepare($sql);
+        $sth->execute();
+        return $sth->fetch(PDO::FETCH_ASSOC)['total'];
+    }
 }

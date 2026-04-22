@@ -80,11 +80,19 @@ $orders = $orderModel->getByUser($user_id);
                                     <?= date('d/m/Y H:i', strtotime($order['created_at'])) ?>
                                 </td>
 
-                                <td>
+                                <td class="d-flex gap-2">
                                     <a href="index.php?page=order-detail&id=<?= $order['id'] ?>"
                                         class="btn btn-sm btn-dark">
                                         Chi tiết
                                     </a>
+
+                                    <?php if ($order['status'] == 'pending'): ?>
+                                        <a href="index.php?page=cancel-order&id=<?= $order['id'] ?>"
+                                            class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Bạn có chắc muốn hủy đơn?')">
+                                            Hủy đơn
+                                        </a>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

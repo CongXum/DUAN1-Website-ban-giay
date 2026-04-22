@@ -13,62 +13,36 @@
 
         <div class="Order-toolbar">
 
-            <form method="GET"
-                class="Order-filter-form">
+            <form method="GET" class="Order-filter-form">
+                <input type="hidden" name="page" value="orders">
 
-                <input type="hidden"
-                    name="page"
-                    value="orders">
-
-
-                <input
-                    type="text"
-                    name="keyword"
+                <input type="text" name="keyword"
                     placeholder="Tìm mã đơn hàng..."
-                    value="<?= $_GET['keyword'] ?? '' ?>"
-                    class="Order-search-input">
+                    value="<?= $_GET['keyword'] ?? '' ?>">
 
-
-                <select name="status"
-                    class="Order-select">
-
+                <select name="status">
                     <option value="">-- Trạng thái --</option>
 
-                    <option value="pending"
-                        <?= ($_GET['status'] ?? '') == 'pending' ? 'selected' : '' ?>>
-                        Chờ xác nhận
-                    </option>
+                    <?php
+                    $statuses = [
+                        'pending' => 'Chờ xác nhận',
+                        'paid' => 'Đã thanh toán',
+                        'processing' => 'Đang xử lý',
+                        'shipping' => 'Đang giao',
+                        'completed' => 'Hoàn thành',
+                        'cancelled' => 'Đã huỷ'
+                    ];
 
-                    <option value="processing"
-                        <?= ($_GET['status'] ?? '') == 'processing' ? 'selected' : '' ?>>
-                        Đang xử lý
-                    </option>
-
-                    <option value="shipping"
-                        <?= ($_GET['status'] ?? '') == 'shipping' ? 'selected' : '' ?>>
-                        Đang giao
-                    </option>
-
-                    <option value="completed"
-                        <?= ($_GET['status'] ?? '') == 'completed' ? 'selected' : '' ?>>
-                        Hoàn thành
-                    </option>
-
-                    <option value="cancelled"
-                        <?= ($_GET['status'] ?? '') == 'cancelled' ? 'selected' : '' ?>>
-                        Đã huỷ
-                    </option>
-
+                    foreach ($statuses as $key => $label):
+                    ?>
+                        <option value="<?= $key ?>"
+                            <?= ($_GET['status'] ?? '') == $key ? 'selected' : '' ?>>
+                            <?= $label ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
 
-
-                <button class="Order-btn-filter">
-
-                    <i class="fa fa-search"></i>
-                    Lọc
-
-                </button>
-
+                <button>Lọc</button>
             </form>
 
         </div>
@@ -98,59 +72,58 @@
 
 
             <tbody>
+                <?php foreach ($orders as $order): ?>
 
-                <?php for ($i = 1; $i <= 8; $i++): ?>
+                    <?php
+                    $statusText = [
+                        'pending' => 'Chờ xác nhận',
+                        'paid' => 'Đã thanh toán',
+                        'processing' => 'Đang xử lý',
+                        'shipping' => 'Đang giao',
+                        'completed' => 'Hoàn thành',
+                        'cancelled' => 'Đã huỷ'
+                    ];
+                    ?>
 
                     <tr>
+                        <td>#ORD<?= $order['id'] ?></td>
+                        <td><?= $order['name'] ?></td>
+                        <td><?= $order['phone'] ?></td>
+                        <td><?= $order['email'] ?></td>
+                        <td><?= date('d/m/Y', strtotime($order['created_at'])) ?></td>
 
-                        <td>#ORD00<?= $i ?></td>
-
-                        <td>Nguyễn Văn A</td>
-
-                        <td>0988888888</td>
-
-                        <td>abc@gmail.com</td>
-
-                        <td>15/04/2026</td>
-
-                        <td class="Order-total">
-
-                            1.250.000đ
-
-                        </td>
-
+                        <td><?= number_format($order['total']) ?>đ</td>
 
                         <td>
+                            <div class="status-dropdown">
 
-                            <span class="Order-status Order-status-pending">
+                                <!-- BADGE -->
+                                <span class="Order-status Order-status-<?= $order['status'] ?>"
+                                    onclick="toggleStatus(this)">
+                                    <?= $statusText[$order['status']] ?? $order['status'] ?>
+                                </span>
 
-                                Chờ xác nhận
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <div class="Order-actions">
-
-
-                                <a href="?page=view-order&id=<?= $i ?>"
-                                    class="Order-btn-view">
-
-                                    <i class="fa fa-eye"></i>
-
-                                </a>
+                                <!-- MENU -->
+                                <div class="status-menu">
+                                    <a href="?page=update-status&id=<?= $order['id'] ?>&status=processing">Đang xử lý</a>
+                                    <a href="?page=update-status&id=<?= $order['id'] ?>&status=paid">Đã thanh toán</a>
+                                    <a href="?page=update-status&id=<?= $order['id'] ?>&status=shipping">Đang giao</a>
+                                    <a href="?page=update-status&id=<?= $order['id'] ?>&status=completed">Hoàn thành</a>
+                                    <a href="?page=update-status&id=<?= $order['id'] ?>&status=cancelled">Huỷ</a>
+                                </div>
 
                             </div>
-
                         </td>
 
+                        <td class="text-center align-middle">
+                            <a href="?page=order-detail&id=<?= $order['id'] ?>"
+                                class="btn btn-sm btn-info d-inline-flex align-items-center justify-content-center">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </td>
                     </tr>
 
-                <?php endfor; ?>
-
+                <?php endforeach; ?>
             </tbody>
 
         </table>
@@ -159,28 +132,36 @@
 
         <!-- PAGINATION -->
 
-        <div class="Order-pagination">
-
-            <?php for ($i = 1; $i <= 5; $i++): ?>
-
-                <a
-                    href="?page=orders
-                    &p=<?= $i ?>
-                    &keyword=<?= $_GET['keyword'] ?? '' ?>
-                    &status=<?= $_GET['status'] ?? '' ?>"
-                    class="Order-page-btn
-                    <?= ($_GET['p'] ?? 1) == $i ? 'active' : '' ?>">
-
+        <div class="mt-3 text-center">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?page=orders&p=<?= $i ?>&keyword=<?= $keyword ?>&status=<?= $status ?>"
+                    class="btn btn-sm <?= $i == $page ? 'btn-dark' : 'btn-outline-dark' ?>">
                     <?= $i ?>
-
                 </a>
-
             <?php endfor; ?>
-
-
         </div>
 
 
     </div>
 
 </div>
+<script>
+    function toggleStatus(el) {
+        const parent = el.closest('.status-dropdown');
+
+        // đóng tất cả
+        document.querySelectorAll('.status-dropdown')
+            .forEach(item => item.classList.remove('active'));
+
+        // mở cái đang click
+        parent.classList.toggle('active');
+    }
+
+    // click ngoài → đóng
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.status-dropdown')) {
+            document.querySelectorAll('.status-dropdown')
+                .forEach(item => item.classList.remove('active'));
+        }
+    });
+</script>

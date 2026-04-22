@@ -8,6 +8,8 @@ session_start();
 require_once __DIR__ . '/../Model/Database.php';
 require_once __DIR__ . '/../Model/Product.php';
 require_once __DIR__ . '/../Model/Category.php';
+require_once __DIR__ . '/../Model/Order.php';
+require_once __DIR__ . '/Controller/OrderController.php';
 
 $db   = new Database();
 $conn = $db->connect();
@@ -167,70 +169,79 @@ include __DIR__ . '/View/Layouts/Sidebar.php';
 ?>
 
 <div class="content">
-<?php
-// Flash messages
-if (!empty($_SESSION['success'])): ?>
-  <div class="alert alert-success alert-dismissible fade show mx-3 mt-3" role="alert">
-    <i class="fa fa-check-circle me-2"></i><?= htmlspecialchars($_SESSION['success']) ?>
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  </div>
-<?php unset($_SESSION['success']); endif;
+    <?php
+    // Flash messages
+    if (!empty($_SESSION['success'])): ?>
+        <div class="alert alert-success alert-dismissible fade show mx-3 mt-3" role="alert">
+            <i class="fa fa-check-circle me-2"></i><?= htmlspecialchars($_SESSION['success']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php unset($_SESSION['success']);
+    endif;
 
-if (!empty($_SESSION['error'])): ?>
-  <div class="alert alert-danger alert-dismissible fade show mx-3 mt-3" role="alert">
-    <i class="fa fa-exclamation-circle me-2"></i><?= htmlspecialchars($_SESSION['error']) ?>
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  </div>
-<?php unset($_SESSION['error']); endif; ?>
+    if (!empty($_SESSION['error'])): ?>
+        <div class="alert alert-danger alert-dismissible fade show mx-3 mt-3" role="alert">
+            <i class="fa fa-exclamation-circle me-2"></i><?= htmlspecialchars($_SESSION['error']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php unset($_SESSION['error']);
+    endif; ?>
 
-<?php
-switch ($page) {
-    case 'products':
-        include 'View/Modules/Products/Index.php';
-        break;
-    case 'create-product':
-        include 'View/Modules/Products/Create.php';
-        break;
-    case 'update-product':
-        include 'View/Modules/Products/Update.php';
-        break;
-    case 'view-product':
-        include 'View/Modules/Products/View.php';
-        break;
+    <?php
+    switch ($page) {
+        case 'products':
+            include 'View/Modules/Products/Index.php';
+            break;
+        case 'create-product':
+            include 'View/Modules/Products/Create.php';
+            break;
+        case 'update-product':
+            include 'View/Modules/Products/Update.php';
+            break;
+        case 'view-product':
+            include 'View/Modules/Products/View.php';
+            break;
 
-    case 'categories':
-        include 'View/Modules/Categories/Index.php';
-        break;
-    case 'create-category':
-        include 'View/Modules/Categories/Create.php';
-        break;
-    case 'edit-category':
-        include 'View/Modules/Categories/Edit.php';
-        break;
+        case 'categories':
+            include 'View/Modules/Categories/Index.php';
+            break;
+        case 'create-category':
+            include 'View/Modules/Categories/Create.php';
+            break;
+        case 'edit-category':
+            include 'View/Modules/Categories/Edit.php';
+            break;
 
-    case 'users':
-        include 'View/Modules/Users/Index.php';
-        break;
-    case 'orders':
-        include 'View/Modules/Orders/Index.php';
-        break;
-    case 'view-order':
-        include 'View/Modules/Orders/View.php';
-        break;
-    case 'blogs':
-        include 'View/Modules/Blogs/Index.php';
-        break;
-    case 'comments':
-        include 'View/Modules/Comment/Index.php';
-        break;
-    case 'settings':
-        include 'View/Modules/Settings/Index.php';
-        break;
-    default:
-        include 'View/Modules/Dashboard/Index.php';
-        break;
-}
-?>
+        case 'users':
+            include 'View/Modules/Users/Index.php';
+            break;
+        case 'orders':
+            $controller = new OrderController($conn);
+            $controller->index();
+            break;
+
+        case 'update-status':
+            $controller = new OrderController($conn);
+            $controller->updateStatus();
+            break;
+        case 'order-detail':
+            $orderController = new OrderController($conn);
+            $orderController->detail();
+            break;
+        case 'blogs':
+            include 'View/Modules/Blogs/Index.php';
+            break;
+        case 'comments':
+            include 'View/Modules/Comment/Index.php';
+            break;
+        case 'settings':
+            include 'View/Modules/Settings/Index.php';
+            break;
+        default:
+            include 'View/Modules/Dashboard/Index.php';
+            break;
+    }
+    ?>
 </div>
 
 <?php include __DIR__ . '/View/Layouts/Footer.php'; ?>
