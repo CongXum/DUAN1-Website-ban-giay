@@ -41,6 +41,7 @@ $orders = $orderModel->getByUser($user_id);
 
                             $statusText = [
                                 'pending' => 'Chờ xử lý',
+                                'paid' => 'Đã thanh toán',
                                 'processing' => 'Đang xử lý',
                                 'shipping' => 'Đang giao',
                                 'completed' => 'Hoàn thành',
@@ -49,6 +50,7 @@ $orders = $orderModel->getByUser($user_id);
 
                             $statusClass = [
                                 'pending' => 'warning',
+                                'paid' => 'success',
                                 'processing' => 'info',
                                 'shipping' => 'primary',
                                 'completed' => 'success',

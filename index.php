@@ -107,6 +107,35 @@ switch ($page) {
         $cartController->index();
         break;
 
+    case 'vietqr':
+        $orderModel = new Order($conn);
+
+        $order_id = $_GET['order_id'] ?? 0;
+        $order = $orderModel->getOne($order_id);
+
+        if (!$order) {
+            echo "Đơn hàng không tồn tại";
+            exit;
+        }
+
+        // ✅ TẠO BIẾN Ở ĐÂY
+        $bank = "970422";
+        $account = "0396928846";
+        $amount = $order['total'];
+        $content = "ORDER" . $order_id;
+
+        $qr_url = "https://img.vietqr.io/image/{$bank}-{$account}-compact2.png?amount={$amount}&addInfo={$content}";
+
+        require_once 'Client/View/Pages/vietqr.php';
+        break;
+
+    case 'mark-paid':
+        $orderModel = new Order($conn);
+        $cartModel = new Cart($conn);
+
+        $controller = new OrderController($orderModel, $cartModel);
+        $controller->markPaid();
+        exit;
 
     case 'checkout':
         $cartModel = new Cart($conn);
@@ -116,14 +145,7 @@ switch ($page) {
     case 'product-items':
         include 'Client/View/Pages/Product/ProductItems.php';
         break;
-    
-    case 'order':
-        include __DIR__ . '/Client/View/Pages/Orders.php';
-        break;
 
-        // case 'shop':           // sau này thêm
-        //     include __DIR__ . '/Client/View/Pages/Shop.php';
-        //     break;
 
     case 'orders':
         $orderModel = new Order($conn);

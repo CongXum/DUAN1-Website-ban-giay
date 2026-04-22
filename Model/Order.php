@@ -31,14 +31,14 @@ class Order
     }
 
     public function getOne(int $id)
-{
-    $sql = "SELECT * FROM orders WHERE id = :idDonHang";
+    {
+        $sql = "SELECT * FROM orders WHERE id = :idDonHang";
 
-    $sth = $this->_connect->prepare($sql);
-    $sth->execute(['idDonHang' => $id]);
+        $sth = $this->_connect->prepare($sql);
+        $sth->execute([':idDonHang' => $id]);
 
-    return $sth->fetch(PDO::FETCH_ASSOC);
-}
+        return $sth->fetch(PDO::FETCH_ASSOC);
+    }
 
 
     public function getDetailOrder(int $id)
@@ -59,16 +59,16 @@ class Order
 
     //them order// 🔥 Tạo order
     public function createOrder($user_id, $name, $email, $phone, $address, $total, $payment_method)
-{
-    $sql = "INSERT INTO orders 
+    {
+        $sql = "INSERT INTO orders 
     (user_id, name, email, phone, address, total, status, payment_method, created_at)
     VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, NOW())";
 
-    $stmt = $this->_connect->prepare($sql);
-    $stmt->execute([$user_id, $name, $email, $phone, $address, $total, $payment_method]);
+        $stmt = $this->_connect->prepare($sql);
+        $stmt->execute([$user_id, $name, $email, $phone, $address, $total, $payment_method]);
 
-    return $this->_connect->lastInsertId();
-}
+        return $this->_connect->lastInsertId();
+    }
 
     // 🔥 Thêm order_detail
     public function insertOrderDetail($order_id, $product_id, $qty, $price)
@@ -77,5 +77,12 @@ class Order
                 VALUES (?, ?, ?, ?)";
         $stmt = $this->_connect->prepare($sql);
         return $stmt->execute([$order_id, $product_id, $qty, $price]);
+    }
+
+    public function updateStatus($order_id, $status)
+    {
+        $sql = "UPDATE orders SET status = ? WHERE id = ?";
+        $stmt = $this->_connect->prepare($sql);
+        return $stmt->execute([$status, $order_id]);
     }
 }

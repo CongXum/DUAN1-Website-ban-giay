@@ -1,7 +1,4 @@
 <?php
-$_SESSION['user'] = [
-    'id' => 1
-];
 
 class CartController
 {

@@ -73,8 +73,23 @@ class OrderController
 
 
 
-        // 4. Redirect
+        // 3. Redirect theo phương thức thanh toán
+        if ($payment_method === 'vietqr') {
+            header("Location: index.php?page=vietqr&order_id=" . $order_id);
+            exit;
+        }
+
+        // mặc định (COD,...)
         header("Location: index.php?page=order-detail&id=" . $order_id);
         exit;
+    }
+
+    public function markPaid()
+    {
+        $order_id = $_GET['order_id'] ?? 0;
+
+        $this->orderModel->updateStatus($order_id, 'paid');
+
+        echo json_encode(['status' => 'ok']);
     }
 }

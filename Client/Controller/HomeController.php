@@ -8,7 +8,6 @@ class HomeController {
 
         $product = new Product($conn);
 
-        var_dump($product);
         require_once 'Client/View/Pages/Home.php';
     
     }

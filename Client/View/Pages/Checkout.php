@@ -57,9 +57,9 @@ $total = 0;
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="payment_method" value="vnpay">
+                            <input class="form-check-input" type="radio" name="payment_method" value="vietqr">
                             <label class="form-check-label">
-                                Thanh toán VNPay
+                                Thanh toán VietQR (quét QR)
                             </label>
                         </div>
 

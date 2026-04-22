@@ -86,6 +86,7 @@ $total = 0;
 
                         $statusText = [
                             'pending' => 'Chờ xử lý',
+                            'paid' => 'Đã thanh toán',
                             'processing' => 'Đang xử lý',
                             'shipping' => 'Đang giao',
                             'completed' => 'Hoàn thành',
@@ -94,6 +95,7 @@ $total = 0;
 
                         $statusClass = [
                             'pending' => 'warning',
+                            'paid' => 'success',
                             'processing' => 'info',
                             'shipping' => 'primary',
                             'completed' => 'success',
