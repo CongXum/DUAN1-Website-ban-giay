@@ -32,7 +32,7 @@ $blogs      = $blogs ?? [];
 </div>
 
 <!-- CATEGORY -->
-<section class="category-area section-padding30">
+<section class="category-area section-padding30 mt-4">
     <div class="container">
         <h2 class="text-center mb-5">Danh mục</h2>
 
@@ -138,7 +138,7 @@ $blogs      = $blogs ?? [];
 
                     <div class="card mb-4 shadow-sm">
 
-                        <img src="public/images/<?= $blog['thumbnail'] ?? 'default.png' ?>"
+                        <img src="public/Admin/Img/blogs/<?= $blog['thumbnail'] ?? 'default.png' ?>"
                              style="height:200px;object-fit:cover">
 
                         <div class="card-body">
@@ -147,8 +147,11 @@ $blogs      = $blogs ?? [];
                                 <a href="index.php?page=blog-detail&id=<?= $blog['id'] ?>">
                                     <?= htmlspecialchars($blog['title']) ?>
                                 </a>
-                            </h5>
+                            </h5>   
 
+                            <p class="text-muted">
+                                <?= substr(strip_tags($blog['title']), 0, 100) ?>...
+                            </p>
                             <p class="text-muted">
                                 <?= substr(strip_tags($blog['content']), 0, 100) ?>...
                             </p>
