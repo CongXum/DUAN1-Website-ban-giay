@@ -30,13 +30,36 @@ class User
         return $sth->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function insert($name, $email, $password, $phone, $address, $created_at, $updated_at)
+    public function insert($name, $email, $password, $phone, $address, $role, $avatar)
     {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $sql = " INSERT INTO $this->table( `name`, `email`, `password`, `phone`, `address`, `created_at`, `updated_at`)
-        VALUES (?,?,?,?,?,?,?);";
+
+        $sql = "INSERT INTO $this->table
+    (name,email,password,phone,address,role,avatar,created_at,updated_at)
+    VALUES (?,?,?,?,?,?,?,?,?)";
+
         $stmt = $this->_connect->prepare($sql);
-        return $stmt->execute([$name, $email, $hashedPassword, $phone, $address, $created_at, $updated_at]);
+
+        return $stmt->execute([
+            $name,
+            $email,
+            $hashedPassword,
+            $phone,
+            $address,
+            $role,
+            $avatar,
+            date('Y-m-d H:i:s'),
+            date('Y-m-d H:i:s')
+        ]);
+    }
+
+    public function updateAvatar($avatar, $id)
+    {
+        $sql = "UPDATE users SET avatar=? WHERE id=?";
+
+        $stmt = $this->_connect->prepare($sql);
+
+        return $stmt->execute([$avatar, $id]);
     }
 
     public function update($name, $email, $password, $phone, $address, $created_at, $updated_at, $id)

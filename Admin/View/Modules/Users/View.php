@@ -33,7 +33,7 @@
             <div class="User-avatar-section">
 
                 <img
-                    src="https://via.placeholder.com/120"
+                    src="/public/Admin/Img/products/<?= !empty($user['avatar']) ? $user['avatar'] : 'default.png' ?>"
                     class="User-avatar-large">
 
                 <h5><?= htmlspecialchars($user['name']) ?></h5>

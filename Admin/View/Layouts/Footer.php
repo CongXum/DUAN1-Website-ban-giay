@@ -50,6 +50,29 @@
     }
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+    <?php if (!empty($_SESSION['success'])): ?>
+
+        Toastify({
+
+            text: "<?= $_SESSION['success'] ?>",
+
+            duration: 3000,
+
+            gravity: "top",
+
+            position: "right",
+
+            backgroundColor: "green"
+
+        }).showToast();
+
+    <?php unset($_SESSION['success']);
+    endif; ?>
+</script>
+
 </body>
 
 </html>

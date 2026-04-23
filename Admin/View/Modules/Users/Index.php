@@ -88,7 +88,8 @@
                         <td><?= $user['id'] ?></td>
 
                         <td>
-                            <img src="https://via.placeholder.com/60" class="Products-image">
+                            <img src="../public/Admin/Img/products/<?= $user['avatar'] ?? 'default.png' ?>"
+                                class="Products-image">
                         </td>
 
                         <td><?= htmlspecialchars($user['name']) ?></td>

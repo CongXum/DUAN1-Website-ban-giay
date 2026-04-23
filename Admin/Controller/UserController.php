@@ -40,37 +40,117 @@ class UserController
     public function create()
     {
         if (isset($_POST['create'])) {
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $phone = $_POST['phone'];
-            $address = $_POST['address'];
-            $role = $_POST['role'];
 
-            // Kiểm tra email đã tồn tại
+            $name     = trim($_POST['name'] ?? '');
+            $email    = trim($_POST['email'] ?? '');
+            $password = $_POST['password'] ?? '';
+            $phone    = trim($_POST['phone'] ?? '');
+            $address  = trim($_POST['address'] ?? '');
+            $role     = $_POST['role'] ?? 0;
+
+            $errors = [];
+
+            $errors = [];
+
+            // validate name
+            if ($name === '') {
+                $errors['name'] = "Tên không được để trống";
+            }
+
+            // validate email
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = "Email không hợp lệ";
+            }
+
+            // validate password
+            if (strlen($password) < 6) {
+                $errors['password'] = "Mật khẩu phải từ 6 ký tự";
+            }
+
+            // check duplicate email
             if ($this->user->checkEmail($email)) {
-                $error = "Email đã tồn tại!";
-            } else {
-                $created_at = date('Y-m-d H:i:s');
-                $updated_at = date('Y-m-d H:i:s');
+                $errors['email'] = "Email đã tồn tại";
+            }
 
-                if ($this->user->insert($name, $email, password_hash($password, PASSWORD_DEFAULT), $phone, $address, $role, $created_at, $updated_at)) {
-                    header("Location: /Admin/index.php?page=users");
-                    exit;
+            // ======================
+            // HANDLE AVATAR UPLOAD
+            // ======================
+            $avatar = null;
+
+            if (!empty($_FILES['avatar']['name'])) {
+
+                $allowedExt = ['jpg', 'jpeg', 'png', 'webp'];
+                $ext = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
+
+                if (!in_array($ext, $allowedExt)) {
+                    $errors[] = "Avatar phải là jpg, jpeg, png, webp";
                 } else {
-                    $error = "Có lỗi xảy ra khi tạo tài khoản!";
+
+                    $uploadDir = __DIR__ . '/../../public/Admin/Img/products/';
+
+                    if (!is_dir($uploadDir)) {
+                        mkdir($uploadDir, 0777, true);
+                    }
+
+                    $avatar = time() . '_' . uniqid() . '.' . $ext;
+
+                    if (!move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadDir . $avatar)) {
+                        $errors[] = "Upload avatar thất bại";
+                    }
                 }
             }
+
+            // ======================
+            // IF ERROR
+            // ======================
+            if (!empty($errors)) {
+                $_SESSION['error'] = implode("<br>", $errors);
+                include __DIR__ . '/../View/Modules/Users/Create.php';
+                return;
+            }
+
+            // ======================
+            // INSERT DB
+            // ======================
+            $this->user->insert(
+                $name,
+                $email,
+                password_hash($password, PASSWORD_DEFAULT),
+                $phone,
+                $address,
+                $role,
+                $avatar
+            );
+
+            $_SESSION['success'] = "Tạo user thành công";
+
+            header("Location: index.php?page=users");
+            exit;
         }
+
         include __DIR__ . '/../View/Modules/Users/Create.php';
     }
-
     public function edit()
     {
         $id = $_GET['id'] ?? null;
         if (!$id) {
             header("Location: /Admin/index.php?page=users");
             exit;
+        }
+
+        if (!empty($_FILES['avatar']['name'])) {
+
+            $avatar = time() . $_FILES['avatar']['name'];
+
+            move_uploaded_file(
+
+                $_FILES['avatar']['tmp_name'],
+
+                "/public/Admin/Img/products" . $avatar
+
+            );
+
+            $this->user->updateAvatar($avatar, $id);
         }
 
         $user = $this->user->getOne($id);
