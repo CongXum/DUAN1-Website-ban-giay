@@ -41,9 +41,7 @@ $blogs      = $blogs ?? [];
                 <div class="col-lg-4 col-md-6 mb-4">
                     <a href="index.php?page=product&cat=<?= $cat['id'] ?>">
                         <div class="card shadow-sm h-100">
-                            <img src="public/images/<?= $cat['image'] ?? 'default.png' ?>"
-                                 style="height:200px;object-fit:cover">
-
+                        
                             <div class="card-body text-center">
                                 <h5><?= htmlspecialchars($cat['name']) ?></h5>
                             </div>
@@ -67,7 +65,7 @@ $blogs      = $blogs ?? [];
     <div class="card product-card mb-4 shadow-sm h-100 d-flex flex-column">
 
         <!-- ẢNH -->
-        <img src="public/images/<?= $item['image'] ?? 'default.png' ?>"
+        <img src="public/images/<?= $item['images'] ?? 'default.png' ?>"
              onerror="this.src='public/images/default.png'"
              class="product-img">
 
@@ -140,7 +138,7 @@ $blogs      = $blogs ?? [];
 
                     <div class="card mb-4 shadow-sm">
 
-                        <img src="public/images/<?= $blog['image'] ?? 'default.png' ?>"
+                        <img src="public/images/<?= $blog['thumbnail'] ?? 'default.png' ?>"
                              style="height:200px;object-fit:cover">
 
                         <div class="card-body">

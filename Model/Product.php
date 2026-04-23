@@ -77,9 +77,9 @@ public function getCategoryById($id) {
     }
     public function getLatest($limit = 8)
 {
-    $sql = "SELECT * FROM products ORDER BY id DESC LIMIT ?";
+    $limit = (int)$limit;
+    $sql = "SELECT * FROM products ORDER BY id DESC LIMIT $limit";
     $sth = $this->_connect->prepare($sql);
-    $sth->bindValue(1, (int)$limit, PDO::PARAM_INT);
     $sth->execute();
     return $sth->fetchAll(PDO::FETCH_ASSOC);
 }

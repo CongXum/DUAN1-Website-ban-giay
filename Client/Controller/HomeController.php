@@ -3,18 +3,20 @@
 require_once __DIR__ . '/../../Model/Product.php';
 require_once __DIR__ . '/../../Model/Blogs.php';
 
-class HomeController {
+class HomeController
+{
 
     private $productModel;
     private $blogModel;
 
-    public function __construct($conn) {
+    public function __construct($conn)
+    {
         $this->productModel = new Product($conn);
-        $this->blogModel    = new Blog($conn);
-        
+        $this->blogModel = new Blog($conn);
     }
 
-    public function index() {
+    public function index()
+    {
         // lấy dữ liệu
         $products   = $this->productModel->getLatest(8);
         $categories = $this->productModel->getAllCategories();
