@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Client/View/Pages/Orders.php
 
 // Kiểm tra đăng nhập
@@ -11,7 +11,7 @@ $userId = $_SESSION['user']['id'];
 
 // Lấy danh sách đơn hàng của user
 $orders = $orderModel->getOrdersByUserId($userId);
-?>
+?>  
 
 <main class="pt-5 pb-5 bg-light">
     <div class="container">
@@ -38,27 +38,31 @@ $orders = $orderModel->getOrdersByUserId($userId);
                             <tr>
                                 <td>#<?php echo $order['id']; ?></td>
                                 <td><?php echo date('d/m/Y H:i', strtotime($order['created_at'])); ?></td>
-                                <td><?php echo number_format($order['total_amount']); ?> đ</td>
+                                <td><?php echo number_format($order['total']); ?> đ</td>
                                 <td>
-                                    <?php 
+                                    <?php
                                     $statusClass = '';
                                     $statusText = '';
-                                    switch($order['status']) {
+                                    switch ($order['status']) {
                                         case 'pending':
                                             $statusClass = 'bg-warning';
-                                            $statusText = 'Chờ xử lý';
+                                            $statusText = 'Chờ xác nhận';
                                             break;
                                         case 'processing':
                                             $statusClass = 'bg-info';
                                             $statusText = 'Đang xử lý';
                                             break;
-                                        case 'shipped':
+                                        case 'shipping':
                                             $statusClass = 'bg-primary';
                                             $statusText = 'Đang giao';
                                             break;
-                                        case 'delivered':
+                                       case 'completed':
+                                            $statusClass = 'bg-primary';
+                                            $statusText = 'Hoàn thành';
+                                            break;
+                                        case 'paid':
                                             $statusClass = 'bg-success';
-                                            $statusText = 'Đã giao';
+                                            $statusText = 'Đã thanh toán';
                                             break;
                                         case 'cancelled':
                                             $statusClass = 'bg-danger';
@@ -72,6 +76,17 @@ $orders = $orderModel->getOrdersByUserId($userId);
                                     <span class="badge <?php echo $statusClass; ?>"><?php echo $statusText; ?></span>
                                 </td>
                                 <td><a href="index.php?page=order-detail&id=<?php echo $order['id']; ?>" class="btn btn-sm btn-primary">Xem</a></td>
+                                <td>
+                                    <?php if ($order['status'] === 'pending'): ?>
+                                        <a href="index.php?page=cancel-order&id=<?php echo $order['id']; ?>"
+                                            class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Bạn có chắc muốn hủy đơn này không?')">
+                                            Hủy
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="text-muted">---</span>
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

@@ -105,6 +105,7 @@
 
                                 <!-- MENU -->
                                 <div class="status-menu">
+                                    <a href="?page=update-status&id=<?= $order['id'] ?>&status=pending">Chờ xác nhận</a>
                                     <a href="?page=update-status&id=<?= $order['id'] ?>&status=processing">Đang xử lý</a>
                                     <a href="?page=update-status&id=<?= $order['id'] ?>&status=paid">Đã thanh toán</a>
                                     <a href="?page=update-status&id=<?= $order['id'] ?>&status=shipping">Đang giao</a>

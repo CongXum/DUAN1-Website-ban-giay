@@ -1,4 +1,9 @@
 <?php
+require_once __DIR__ . '/../../Model/Database.php';
+require_once __DIR__ . '/../../Model/Product.php';
+
+$connect = (new Database())->connect();
+$productModel = new Product($connect);
 
 $page = $_GET['page'] ?? '';
 if ($page === 'create-product' && $_SERVER['REQUEST_METHOD'] === 'POST') {

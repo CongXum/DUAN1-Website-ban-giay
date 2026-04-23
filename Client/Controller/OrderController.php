@@ -62,6 +62,8 @@ class OrderController
             );
         }
 
+        $this->cartModel->clearCart($user_id);
+
         if ($payment_method === 'vietqr') {
             header("Location: index.php?page=vietqr&order_id=" . $order_id);
             exit;

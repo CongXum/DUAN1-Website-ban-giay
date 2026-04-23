@@ -1,15 +1,26 @@
 <?php
 
+require_once __DIR__ . '/../../Model/Product.php';
+require_once __DIR__ . '/../../Model/Blogs.php';
+
 class HomeController {
 
-    public function index(){
-    
-        global $conn;
+    private $productModel;
+    private $blogModel;
 
-        $product = new Product($conn);
-
-        require_once 'Client/View/Pages/Home.php';
-    
+    public function __construct($conn) {
+        $this->productModel = new Product($conn);
+        $this->blogModel    = new Blog($conn);
+        
     }
 
+    public function index() {
+        // lấy dữ liệu
+        $products   = $this->productModel->getLatest(8);
+        $categories = $this->productModel->getAllCategories();
+        $blogs      = $this->blogModel->getLatest(3);
+
+        // load view
+        require_once __DIR__ . '/../View/Pages/Home.php';
+    }
 }

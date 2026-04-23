@@ -32,10 +32,16 @@ class Order
 
     public function getOne(int $id)
     {
-        $sql = "SELECT * FROM orders WHERE id = :idDonHang";
+        $sql = "SELECT 
+                orders.*, 
+                users.name AS user_name,
+                users.email AS user_email
+            FROM orders
+            JOIN users ON users.id = orders.user_id
+            WHERE orders.id = :idDonHang";
 
         $sth = $this->_connect->prepare($sql);
-        $sth->execute([':idDonHang' => $id]);
+        $sth->execute(['idDonHang' => $id]);
 
         return $sth->fetch(PDO::FETCH_ASSOC);
     }
@@ -78,6 +84,8 @@ class Order
         $stmt = $this->_connect->prepare($sql);
         return $stmt->execute([$order_id, $product_id, $qty, $price]);
     }
+
+
 
     public function getAllAdmin($keyword = '', $status = '', $page = 1, $limit = 10)
     {
@@ -161,7 +169,10 @@ class Order
 
     public function updateStatus(int $id, string $status)
     {
-        $sql = "UPDATE $this->table SET status = :status, updated_at = NOW() WHERE id = :id";
+        $sql = "UPDATE $this->table 
+            SET status = :status, updated_at = NOW() 
+            WHERE id = :id";
+
         $sth = $this->_connect->prepare($sql);
         $sth->bindParam(':status', $status);
         $sth->bindParam(':id', $id, PDO::PARAM_INT);
@@ -177,5 +188,4 @@ class Order
         $sth->execute();
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 class Product {
 
     protected $table = "products";
@@ -74,5 +75,13 @@ public function getCategoryById($id) {
         $result = $sth->fetch(PDO::FETCH_ASSOC);
         return $result['total'];
     }
+    public function getLatest($limit = 8)
+{
+    $sql = "SELECT * FROM products ORDER BY id DESC LIMIT ?";
+    $sth = $this->_connect->prepare($sql);
+    $sth->bindValue(1, (int)$limit, PDO::PARAM_INT);
+    $sth->execute();
+    return $sth->fetchAll(PDO::FETCH_ASSOC);
+}
 
 }
