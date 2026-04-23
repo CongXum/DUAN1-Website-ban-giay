@@ -14,6 +14,7 @@ require_once __DIR__ . '/../Model/Order.php';
 require_once __DIR__ . '/../Model/Blogs.php';
 require_once __DIR__ . '/../Model/BlogCategory.php';
 require_once __DIR__ . '/../Model/User.php';
+require_once __DIR__ . '/../Model/Dashboard.php';
 
 // =======================
 // LOAD CONTROLLERS
@@ -23,6 +24,7 @@ require_once __DIR__ . '/Controller/CategoryController.php';
 require_once __DIR__ . '/Controller/OrderController.php';
 require_once __DIR__ . '/Controller/BlogController.php';
 require_once __DIR__ . '/Controller/UserController.php';
+require_once __DIR__ . '/Controller/DashboardController.php';
 
 // =======================
 // CONNECT DB
@@ -204,7 +206,7 @@ include __DIR__ . '/View/Layouts/Sidebar.php';
 
         // default dashboard
         default:
-            include 'View/Modules/Dashboard/Index.php';
+            (new DashboardController($conn))->index();
             break;
     }
     ?>

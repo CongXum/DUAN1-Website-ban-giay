@@ -1,139 +1,91 @@
 <div class="container-fluid">
 
-    <div class="Dashboard-wrapper">
+    <div class="dashboard-wrapper">
 
+        <div class="dashboard-cards">
 
-        <!-- KPI CARDS -->
-
-        <div class="Dashboard-cards">
-
-
-            <div class="Dashboard-card">
-
-                <div class="Dashboard-card-icon bg-primary">
-
+            <div class="dashboard-card">
+                <div class="dashboard-icon bg-primary">
                     <i class="fa fa-users"></i>
-
                 </div>
-
                 <div>
-
-                    <h3>120</h3>
-
+                    <h3><?= $totalUsers ?></h3>
                     <p>Người dùng</p>
-
                 </div>
-
             </div>
 
 
-
-            <div class="Dashboard-card">
-
-                <div class="Dashboard-card-icon bg-success">
-
+            <div class="dashboard-card">
+                <div class="dashboard-icon bg-success">
                     <i class="fa fa-box"></i>
-
                 </div>
-
                 <div>
-
-                    <h3>85</h3>
-
+                    <h3><?= $totalProducts ?></h3>
                     <p>Sản phẩm</p>
-
                 </div>
-
             </div>
 
 
-
-            <div class="Dashboard-card">
-
-                <div class="Dashboard-card-icon bg-warning">
-
+            <div class="dashboard-card">
+                <div class="dashboard-icon bg-warning">
                     <i class="fa fa-shopping-cart"></i>
-
                 </div>
-
                 <div>
-
-                    <h3>46</h3>
-
+                    <h3><?= $totalOrders ?></h3>
                     <p>Đơn hàng</p>
-
                 </div>
-
             </div>
 
 
-
-            <div class="Dashboard-card">
-
-                <div class="Dashboard-card-icon bg-danger">
-
-                    <i class="fa fa-newspaper"></i>
-
+            <div class="dashboard-card">
+                <div class="dashboard-icon bg-danger">
+                    <i class="fa fa-money-bill"></i>
                 </div>
-
                 <div>
-
-                    <h3>12</h3>
-
-                    <p>Bài viết</p>
-
+                    <h3><?= number_format($revenueToday) ?>đ</h3>
+                    <p>Doanh thu hôm nay</p>
                 </div>
-
             </div>
-
 
         </div>
 
 
+        <div class="dashboard-main-grid">
 
-        <!-- MAIN CONTENT -->
+            <div class="dashboard-card-box">
 
-        <div class="Dashboard-main-grid">
+                <h5>Đơn gần nhất</h5>
 
-
-            <!-- RECENT ORDERS -->
-
-            <div class="Dashboard-card-box">
-
-                <h5>Đơn hàng gần đây</h5>
-
-                <table class="Dashboard-table">
+                <table class="dashboard-table">
 
                     <thead>
 
                         <tr>
-
                             <th>ID</th>
-                            <th>Khách hàng</th>
-                            <th>Tổng tiền</th>
-                            <th>Trạng thái</th>
-
+                            <th>Khách</th>
+                            <th>Tổng</th>
+                            <th>Status</th>
                         </tr>
 
                     </thead>
 
                     <tbody>
 
-                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                        <?php foreach ($latestOrders as $order): ?>
 
                             <tr>
 
-                                <td>#ORD<?= $i ?></td>
+                                <td>#<?= $order['id'] ?></td>
 
-                                <td>Nguyễn Văn <?= $i ?></td>
+                                <td><?= $order['name'] ?></td>
 
-                                <td>1.500.000đ</td>
+                                <td><?= number_format($order['total']) ?>đ</td>
 
                                 <td>
 
-                                    <span class="Dashboard-badge success">
+                                    <span class="dashboard-badge <?= $order['status'] ?>">
 
-                                        Hoàn thành
+                                        <?= $order['status'] ?>
 
                                     </span>
 
@@ -141,7 +93,7 @@
 
                             </tr>
 
-                        <?php endfor; ?>
+                        <?php endforeach ?>
 
                     </tbody>
 
@@ -150,70 +102,81 @@
             </div>
 
 
+            <div class="dashboard-card-box">
 
-            <!-- QUICK STATS -->
+                <h5>Quick Stats</h5>
 
-            <div class="Dashboard-card-box">
-
-                <h5>Thống kê nhanh</h5>
-
-                <ul class="Dashboard-stats">
+                <ul class="dashboard-stats">
 
                     <li>
-
                         <span>Đơn hôm nay</span>
-
-                        <strong>8</strong>
-
+                        <strong><?= $ordersToday ?></strong>
                     </li>
 
                     <li>
-
-                        <span>Doanh thu hôm nay</span>
-
-                        <strong>6.800.000đ</strong>
-
-                    </li>
-
-                    <li>
-
                         <span>User mới</span>
-
-                        <strong>3</strong>
-
+                        <strong><?= $newUsersToday ?></strong>
                     </li>
 
                     <li>
-
-                        <span>Sản phẩm hết hàng</span>
-
-                        <strong>5</strong>
-
+                        <span>Out of stock</span>
+                        <strong><?= $outOfStock ?></strong>
                     </li>
 
                 </ul>
 
             </div>
 
-
         </div>
 
 
-        <!-- CHART PLACEHOLDER -->
+        <div class="dashboard-card-box">
 
-        <div class="Dashboard-card-box">
+            <h5>Revenue 7 days</h5>
 
-            <h5>Biểu đồ doanh thu</h5>
+            <div class="dashboard-chart">
 
-            <div class="Dashboard-chart-placeholder">
-
-                Biểu đồ sẽ hiển thị tại đây
+                <canvas id="chartRevenue"></canvas>
 
             </div>
 
         </div>
 
-
     </div>
 
 </div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const data = <?= json_encode($chartData) ?>;
+
+    const labels = data.map(item => item.day);
+
+    const values = data.map(item => item.revenue);
+
+
+    new Chart(document.getElementById("chartRevenue"), {
+
+        type: "line",
+
+        data: {
+
+            labels: labels,
+
+            datasets: [{
+
+                label: "Revenue",
+
+                data: values,
+
+                tension: .4
+
+            }]
+
+        }
+
+    });
+</script>
