@@ -1598,7 +1598,6 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 
-  display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 
@@ -2266,8 +2265,12 @@ input:checked+.slider:before {
 
 .actions {
   display: flex;
+<<<<<<< HEAD
   gap: 8px;
   /* khoảng cách giữa nút */
+=======
+  gap: 8px; /* khoảng cách giữa nút */
+>>>>>>> 66567c475d85d905d89ab495ba34fa76467c4bc6
   align-items: center;
 }
 
@@ -2285,6 +2288,7 @@ input:checked+.slider:before {
 }
 
 .role-admin {
+<<<<<<< HEAD
   color: #5b79cb;
   /* xanh nước đậm vừa */
   background-color: #e0ecff;
@@ -2294,6 +2298,12 @@ input:checked+.slider:before {
 
 
 
+=======
+  color: #5b79cb; /* xanh nước đậm vừa */
+  background-color: #e0ecff; /* nền xanh rất nhẹ */
+  font-weight: 600;
+}
+>>>>>>> 66567c475d85d905d89ab495ba34fa76467c4bc6
 /* ===============================
    BLOG CATEGORY SECTION
 =============================== */
@@ -2428,7 +2438,10 @@ input:checked+.slider:before {
 
   color: var(--muted);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 66567c475d85d905d89ab495ba34fa76467c4bc6
 .Blog-category {
   font-size: 13px;
 
@@ -2442,7 +2455,10 @@ input:checked+.slider:before {
 
   display: inline-block;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 66567c475d85d905d89ab495ba34fa76467c4bc6
 .Blog-category-badge {
   background: #eef2ff;
 
@@ -2454,7 +2470,10 @@ input:checked+.slider:before {
 
   font-size: 12px;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 66567c475d85d905d89ab495ba34fa76467c4bc6
 /* ===============================
    BLOG CATEGORY TOAST
 =============================== */
@@ -2508,7 +2527,10 @@ input:checked+.slider:before {
     opacity: 1;
   }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 66567c475d85d905d89ab495ba34fa76467c4bc6
 /* ===== DASHBOARD ROOT ===== */
 
 .dashboard-wrapper {
@@ -2560,10 +2582,19 @@ input:checked+.slider:before {
 
   inset: 0;
 
+<<<<<<< HEAD
   background: linear-gradient(120deg,
       transparent,
       rgba(255, 255, 255, 0.35),
       transparent);
+=======
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+>>>>>>> 66567c475d85d905d89ab495ba34fa76467c4bc6
 
   opacity: 0;
 
@@ -2796,4 +2827,8 @@ input:checked+.slider:before {
   .dashboard-wrapper {
     padding: 18px;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 66567c475d85d905d89ab495ba34fa76467c4bc6
