@@ -1,105 +1,87 @@
-<?php
-$user_id = $_SESSION['user']['id'] ?? 0;
+<?php 
+// Client/View/Pages/Orders.php
 
-if ($user_id == 0) {
-    echo "<div class='text-center mt-5'>Vui lòng đăng nhập</div>";
-    exit;
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['user'])) {
+    header("Location: index.php?page=login");
+    exit();
 }
 
-$orders = $orderModel->getByUser($user_id);
+$userId = $_SESSION['user']['id'];
+
+// Lấy danh sách đơn hàng của user
+$orders = $orderModel->getOrdersByUserId($userId);
 ?>
 
 <main class="pt-5 pb-5 bg-light">
     <div class="container">
         <h2 class="text-center mb-4 fw-bold">Đơn Hàng Của Tôi</h2>
 
-        <?php if (empty($orders)): ?>
-            <div class="text-center">
-                <p class="text-muted">Bạn chưa có đơn hàng nào</p>
-                <a href="index.php?page=product" class="btn btn-dark">
-                    Đi mua ngay
-                </a>
-            </div>
-        <?php else: ?>
+        <div class="mb-3">
+            <a href="index.php?page=profile" class="btn btn-secondary">← Quay lại Profile</a>
+        </div>
 
+        <?php if (!empty($orders)): ?>
             <div class="table-responsive">
-                <table class="table align-middle bg-white shadow-sm">
+                <table class="table table-bordered">
                     <thead class="table-light">
                         <tr>
-                            <th>#</th>
-                            <th>Mã đơn</th>
-                            <th>Tổng tiền</th>
-                            <th>Trạng thái</th>
-                            <th>Ngày đặt</th>
-                            <th></th>
+                            <th>Mã Đơn Hàng</th>
+                            <th>Ngày Đặt</th>
+                            <th>Tổng Tiền</th>
+                            <th>Trạng Thái</th>
+                            <th>Chi Tiết</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($orders as $index => $order):
-
-                            $status = $order['status'] ?? 'pending';
-
-                            $statusText = [
-                                'pending' => 'Chờ xử lý',
-                                'paid' => 'Đã thanh toán',
-                                'processing' => 'Đang xử lý',
-                                'shipping' => 'Đang giao',
-                                'completed' => 'Hoàn thành',
-                                'cancelled' => 'Đã hủy'
-                            ];
-
-                            $statusClass = [
-                                'pending' => 'warning',
-                                'paid' => 'success',
-                                'processing' => 'info',
-                                'shipping' => 'primary',
-                                'completed' => 'success',
-                                'cancelled' => 'danger'
-                            ];
-                        ?>
+                        <?php foreach ($orders as $order): ?>
                             <tr>
-                                <td><?= $index + 1 ?></td>
-
+                                <td>#<?php echo $order['id']; ?></td>
+                                <td><?php echo date('d/m/Y H:i', strtotime($order['created_at'])); ?></td>
+                                <td><?php echo number_format($order['total_amount']); ?> đ</td>
                                 <td>
-                                    <strong>#<?= $order['id'] ?></strong>
+                                    <?php 
+                                    $statusClass = '';
+                                    $statusText = '';
+                                    switch($order['status']) {
+                                        case 'pending':
+                                            $statusClass = 'bg-warning';
+                                            $statusText = 'Chờ xử lý';
+                                            break;
+                                        case 'processing':
+                                            $statusClass = 'bg-info';
+                                            $statusText = 'Đang xử lý';
+                                            break;
+                                        case 'shipped':
+                                            $statusClass = 'bg-primary';
+                                            $statusText = 'Đang giao';
+                                            break;
+                                        case 'delivered':
+                                            $statusClass = 'bg-success';
+                                            $statusText = 'Đã giao';
+                                            break;
+                                        case 'cancelled':
+                                            $statusClass = 'bg-danger';
+                                            $statusText = 'Đã hủy';
+                                            break;
+                                        default:
+                                            $statusClass = 'bg-secondary';
+                                            $statusText = 'Không xác định';
+                                    }
+                                    ?>
+                                    <span class="badge <?php echo $statusClass; ?>"><?php echo $statusText; ?></span>
                                 </td>
-
-                                <td class="text-danger fw-semibold">
-                                    <?= isset($order['total'])
-                                        ? number_format($order['total']) . ' đ'
-                                        : '0 đ' ?>
-                                </td>
-
-                                <td>
-                                    <span class="badge bg-<?= $statusClass[$status] ?? 'secondary' ?>">
-                                        <?= $statusText[$status] ?? $status ?>
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <?= date('d/m/Y H:i', strtotime($order['created_at'])) ?>
-                                </td>
-
-                                <td class="d-flex gap-2">
-                                    <a href="index.php?page=order-detail&id=<?= $order['id'] ?>"
-                                        class="btn btn-sm btn-dark">
-                                        Chi tiết
-                                    </a>
-
-                                    <?php if ($order['status'] == 'pending'): ?>
-                                        <a href="index.php?page=cancel-order&id=<?= $order['id'] ?>"
-                                            class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Bạn có chắc muốn hủy đơn?')">
-                                            Hủy đơn
-                                        </a>
-                                    <?php endif; ?>
-                                </td>
+                                <td><a href="index.php?page=order-detail&id=<?php echo $order['id']; ?>" class="btn btn-sm btn-primary">Xem</a></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
-
+        <?php else: ?>
+            <div class="text-center">
+                <p class="text-muted">Bạn chưa có đơn hàng nào.</p>
+                <a href="index.php?page=home" class="btn btn-primary">Tiếp tục mua sắm</a>
+            </div>
         <?php endif; ?>
     </div>
 </main>

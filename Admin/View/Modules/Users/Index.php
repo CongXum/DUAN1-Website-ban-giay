@@ -1,12 +1,33 @@
 <div class="container-fluid">
 
-    <div class="Us-card-box">
+    <?php
+    // Hàm helper để xây dựng URL với các tham số lọc
+    function buildFilterUrl($params = []) {
+        $query = ['page' => 'users'];
+        if (isset($_GET['role']) && $_GET['role'] !== '') $query['role'] = $_GET['role'];
+        if (isset($_GET['name']) && $_GET['name'] !== '') $query['name'] = $_GET['name'];
+        if (isset($_GET['email']) && $_GET['email'] !== '') $query['email'] = $_GET['email'];
+
+        // Ghi đè với params mới
+        foreach ($params as $key => $value) {
+            if ($value !== null && $value !== '') {
+                $query[$key] = $value;
+            } elseif (isset($query[$key])) {
+                unset($query[$key]);
+            }
+        }
+
+        return '?' . http_build_query($query);
+    }
+    ?>
+
+    <div class="Products-card-box">
 
         <div class="Products-header">
 
             <h4>Danh sách người dùng</h4>
 
-            <a href="?page=create-user" class="Products-btn-add">
+            <a href="?page=user-create" class="Products-btn-add">
 
                 + Thêm người dùng
 
@@ -14,59 +35,40 @@
 
         </div>
 
-        <div class="Products-toolbar">
+        <!-- Form lọc người dùng -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <form method="GET" action="" class="d-flex gap-3 align-items-end">
+                    <input type="hidden" name="page" value="users">
 
+                    <div class="flex-fill">
+                        <label for="role" class="form-label">Vai trò</label>
+                        <select name="role" id="role" class="form-select">
+                            <option value="">Tất cả vai trò</option>
+                            <option value="admin" <?= (isset($_GET['role']) && $_GET['role'] == 'admin') ? 'selected' : '' ?>>Admin</option>
+                            <option value="user" <?= (isset($_GET['role']) && $_GET['role'] == 'user') ? 'selected' : '' ?>>User</option>
+                        </select>
+                    </div>
 
-            <form method="GET" class="Products-filter-form">
+                    <div class="flex-fill">
+                        <label for="name" class="form-label">Tên</label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên người dùng"
+                               value="<?= isset($_GET['name']) ? htmlspecialchars($_GET['name']) : '' ?>">
+                    </div>
 
-                <input type="hidden" name="page" value="users">
+                    <div class="flex-fill">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" name="email" id="email" class="form-control" placeholder="Nhập email"
+                               value="<?= isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '' ?>">
+                    </div>
 
-
-                <select name="role" class="Products-select">
-
-                    <option value="">-- Vai trò --</option>
-
-                    <option value="admin"
-                        <?= ($_GET['role'] ?? '') == 'admin' ? 'selected' : '' ?>>
-                        Admin
-                    </option>
-
-                    <option value="staff"
-                        <?= ($_GET['role'] ?? '') == 'staff' ? 'selected' : '' ?>>
-                        Staff
-                    </option>
-
-                    <option value="customer"
-                        <?= ($_GET['role'] ?? '') == 'customer' ? 'selected' : '' ?>>
-                        Customer
-                    </option>
-
-                </select>
-
-
-
-                <input
-                    type="text"
-                    name="keyword"
-                    placeholder="Tìm tên hoặc email..."
-                    value="<?= $_GET['keyword'] ?? '' ?>"
-                    class="Products-search-input">
-
-
-
-                <button class="Products-btn-filter">
-
-                    <i class="fa fa-search"></i>
-
-                    Lọc
-
-                </button>
-
-            </form>
-
-
+                    <div>
+                        <button type="submit" class="btn btn-primary">Lọc</button>
+                        <a href="?page=users" class="btn btn-secondary ms-2">Xóa lọc</a>
+                    </div>
+                </form>
+            </div>
         </div>
-
 
         <table class="Products-table">
 
@@ -88,11 +90,12 @@
 
             <tbody>
 
-                <?php for ($i = 1; $i <= 5; $i++): ?>
+                <?php if (!empty($users)): ?>
+                    <?php foreach ($users as $user): ?>
 
                     <tr>
 
-                        <td><?= $i ?></td>
+                    <td><?= $user['id'] ?></td>
 
                         <td>
 
@@ -102,13 +105,13 @@
 
                         <td>
 
-                            Nguyễn Văn <?= $i ?>
+                        <?= htmlspecialchars($user['name']) ?>
 
                         </td>
 
                         <td class="Products-category">
 
-                            user<?= $i ?>@gmail.com
+                        <?= htmlspecialchars($user['email']) ?>
 
                         </td>
 
@@ -116,13 +119,23 @@
 
                             <span class="Products-status Products-status-active">
 
-                                Admin
+                            <?= isset($user['role']) ? ucfirst(htmlspecialchars($user['role'])) : 'User' ?>
 
                             </span>
 
                         </td>
 
                         <td>
+
+                        <?php if (isset($user['status']) && $user['status'] === 'locked'): ?>
+
+                            <span class="Products-status Products-status-inactive">
+
+                                Đã khóa
+
+                            </span>
+
+                        <?php else: ?>
 
                             <span class="Products-status Products-status-active">
 
@@ -130,74 +143,97 @@
 
                             </span>
 
+                        <?php endif; ?>
+
                         </td>
 
                         <td>
 
                             <div class="Products-actions">
 
-                                
+                            <a href="?page=user-view&id=<?= $user['id'] ?>" class="Products-btn-view">
 
                                 <a href="?page=update-user&id=<?= $i ?>" class="Products-btn-edit">
 
                                     <i class="fa fa-pen"></i>
 
-                                </a>
+                            <a href="?page=user-edit&id=<?= $user['id'] ?>" class="Products-btn-edit">
 
                                 <button class="Products-btn-delete">
 
                                     <i class="fa fa-trash"></i>
 
-                                </button>
+                            <?php if (isset($user['status']) && $user['status'] === 'locked'): ?>
+
+                                <a href="?page=user-unlock&id=<?= $user['id'] ?>" class="Products-btn-unlock" onclick="return confirm('Bạn có chắc muốn mở khóa tài khoản này?')">
+
+                                    <i class="fa fa-unlock"></i>
+
+                                </a>
+
+                            <?php else: ?>
+
+                                <a href="?page=user-lock&id=<?= $user['id'] ?>" class="Products-btn-lock" onclick="return confirm('Bạn có chắc muốn khóa tài khoản này?')">
+
+                                    <i class="fa fa-lock"></i>
+
+                                </a>
+
+                            <?php endif; ?>
+
+                            <a href="?page=user-delete&id=<?= $user['id'] ?>" class="Products-btn-delete" onclick="return confirm('Bạn có chắc muốn xóa tài khoản này?')">
 
                             </div>
 
-                        </td>
+                            </a>
 
                     </tr>
 
-                <?php endfor; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+
+                <tr>
+
+                    <td colspan="7" style="text-align: center;">Không có người dùng nào</td>
+
+                </tr>
+
+                <?php endif; ?>
 
             </tbody>
 
         </table>
 
-        <div class="Products-pagination">
+        <!-- Phân trang -->
+        <?php if ($totalPages > 1): ?>
 
+        <div class="pagination">
 
-            <a href="?page=users&p=1"
-                class="Products-page-btn">
+            <?php if ($page > 1): ?>
 
-                «
+                <a href="<?= buildFilterUrl(['p' => $page - 1]) ?>" class="page-link">&laquo; Trước</a>
 
-            </a>
+            <?php endif; ?>
 
+            
 
-            <?php for ($i = 1; $i <= 5; $i++): ?>
-                <a
-                    href="?page=users
-                    &p=<?= $i ?>
-                    &role=<?= $_GET['role'] ?? '' ?>
-                    &keyword=<?= $_GET['keyword'] ?? '' ?>"
-                    class="Products-page-btn
-                    <?= ($_GET['p'] ?? 1) == $i ? 'active' : '' ?>">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
 
-                    <?= $i ?>
-
-                </a>
+                <a href="<?= buildFilterUrl(['p' => $i]) ?>" class="page-link <?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
 
             <?php endfor; ?>
 
+            
 
-            <a href="?page=users&p=5"
-                class="Products-page-btn">
+            <?php if ($page < $totalPages): ?>
 
-                »
+                <a href="<?= buildFilterUrl(['p' => $page + 1]) ?>" class="page-link">Sau &raquo;</a>
 
-            </a>
-
+            <?php endif; ?>
 
         </div>
+
+        <?php endif; ?>
 
     </div>
 

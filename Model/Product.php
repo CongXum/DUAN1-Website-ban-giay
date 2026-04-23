@@ -65,4 +65,14 @@ public function getCategoryById($id) {
     $sth->execute([$id]);
     return $sth->fetch(PDO::FETCH_ASSOC);
 }
+
+    public function countAll()
+    {
+        $sql = "SELECT COUNT(*) as total FROM $this->table";
+        $sth = $this->_connect->prepare($sql);
+        $sth->execute();
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
+
 }

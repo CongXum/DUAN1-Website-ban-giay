@@ -8,12 +8,6 @@ $user = getUserById($id);
 
 */
 
-$user = [
-    'name' => 'Nguyễn Văn A',
-    'email' => 'admin@gmail.com',
-    'role' => 'admin'
-];
-
 ?>
 
 <div class="container-fluid">
@@ -28,17 +22,24 @@ $user = [
             </a>
         </div>
 
+        <?php if (isset($error)): ?>
+            <div class="alert alert-danger">
+                <?= $error ?>
+            </div>
+        <?php endif; ?>
+
         <form method="POST">
 
             <div class="row">
 
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Tên người dùng</label>
+                    <label class="form-label">Họ tên</label>
                     <input
                         type="text"
                         name="name"
                         class="form-control"
-                        value="<?= $user['name'] ?>"
+                        value="<?= htmlspecialchars($user['name']) ?>"
+                        required
                     >
                 </div>
 
@@ -48,7 +49,8 @@ $user = [
                         type="email"
                         name="email"
                         class="form-control"
-                        value="<?= $user['email'] ?>"
+                        value="<?= htmlspecialchars($user['email']) ?>"
+                        required
                     >
                 </div>
 
@@ -63,26 +65,23 @@ $user = [
                 </div>
 
                 <div class="col-md-6 mb-3">
+                    <label class="form-label">Số điện thoại</label>
+                    <input
+                        type="text"
+                        name="phone"
+                        class="form-control"
+                        value="<?= htmlspecialchars($user['phone'] ?? '') ?>"
+                    >
+                </div>
 
-                    <label class="form-label">Vai trò</label>
-
-                    <select name="role" class="form-select">
-
-                        <option <?= $user['role']=="admin"?"selected":"" ?> value="admin">
-                            Admin
-                        </option>
-
-                        <option <?= $user['role']=="user"?"selected":"" ?> value="user">
-                            Khách hàng
-                        </option>
-
-                    </select>
-
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Địa chỉ</label>
+                    <textarea name="address" class="form-control" rows="3"><?= htmlspecialchars($user['address'] ?? '') ?></textarea>
                 </div>
 
             </div>
 
-            <button class="btn btn-warning">
+            <button type="submit" name="update" class="btn btn-warning">
                 Cập nhật người dùng
             </button>
 

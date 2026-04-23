@@ -79,13 +79,6 @@ class Order
         return $stmt->execute([$order_id, $product_id, $qty, $price]);
     }
 
-    public function updateStatus($order_id, $status)
-    {
-        $sql = "UPDATE orders SET status = ? WHERE id = ?";
-        $stmt = $this->_connect->prepare($sql);
-        return $stmt->execute([$status, $order_id]);
-    }
-
     public function getAllAdmin($keyword = '', $status = '', $page = 1, $limit = 10)
     {
         $sql = "SELECT * FROM orders WHERE 1";
@@ -145,6 +138,18 @@ class Order
         $sth->execute();
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getAllWithPagination(int $limit, int $offset)
+    {
+        $sql = "SELECT orders.*, users.name as user_name, users.email as user_email FROM $this->table 
+                JOIN users ON users.id = orders.user_id 
+                ORDER BY orders.created_at DESC 
+                LIMIT :limit OFFSET :offset";
+        $sth = $this->_connect->prepare($sql);
+        $sth->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $sth->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function countAll()
     {
@@ -153,4 +158,24 @@ class Order
         $sth->execute();
         return $sth->fetch(PDO::FETCH_ASSOC)['total'];
     }
+
+    public function updateStatus(int $id, string $status)
+    {
+        $sql = "UPDATE $this->table SET status = :status, updated_at = NOW() WHERE id = :id";
+        $sth = $this->_connect->prepare($sql);
+        $sth->bindParam(':status', $status);
+        $sth->bindParam(':id', $id, PDO::PARAM_INT);
+        return $sth->execute();
+    }
+
+    // Lấy đơn hàng theo user ID
+    public function getOrdersByUserId(int $userId)
+    {
+        $sql = "SELECT * FROM $this->table WHERE user_id = :user_id ORDER BY created_at DESC";
+        $sth = $this->_connect->prepare($sql);
+        $sth->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

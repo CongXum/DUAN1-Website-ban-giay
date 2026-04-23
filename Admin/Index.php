@@ -16,6 +16,13 @@ require_once __DIR__ . '/../Model/BlogCategory.php';
 require_once __DIR__ . '/Controller/OrderController.php';
 require_once __DIR__ . '/Controller/BlogController.php';
 
+require_once __DIR__ . '/../Model/User.php'; // Thêm User model
+
+// 2. Require các Controller
+require_once __DIR__ . '/Controller/ProductController.php';
+require_once __DIR__ . '/Controller/CategoryController.php'; // Đã thêm
+require_once __DIR__ . '/Controller/UserController.php'; // Thêm User controller
+
 
 $db   = new Database();
 $conn = $db->connect();
@@ -176,6 +183,13 @@ if ($page === 'delete-category') {
 // =====================================================================
 include __DIR__ . '/View/Layouts/Header.php';
 include __DIR__ . '/View/Layouts/Sidebar.php';
+// 6. Khởi tạo Model và Controller cho Người dùng
+$userModel = new User($conn);
+$userController = new UserController($userModel);
+
+// 6. Giao diện Header & Sidebar
+include __DIR__ . '/View/layouts/Header.php';
+include __DIR__ . '/View/layouts/Sidebar.php';
 ?>
 
 <div class="content">
@@ -262,6 +276,41 @@ include __DIR__ . '/View/Layouts/Sidebar.php';
                 header("Location: ?page=blogs");
                 exit;
             }
+    // ================= QUẢN LÝ NGƯỜI DÙNG =================
+    case 'users':
+        $userController->index();
+        break;
+
+    case 'user-create':
+        $userController->create();
+        break;
+
+    case 'user-edit':
+        $userController->edit();
+        break;
+
+    case 'user-delete':
+        $userController->delete();
+        break;
+
+    case 'user-lock':
+        $userController->lock();
+        break;
+
+    case 'user-unlock':
+        $userController->unlock();
+        break;
+
+    case 'user-view':
+        $userController->view();
+        break;
+
+    // ================= MẶC ĐỊNH =================
+    default:
+        echo "<h2>Dashboard</h2>";
+        break;
+}
+?>
 
             $blogController->edit();
             break;
