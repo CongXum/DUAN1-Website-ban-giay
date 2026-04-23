@@ -25,6 +25,7 @@
         <link rel="stylesheet" href="/assets/css/slick.css">
         <link rel="stylesheet" href="/assets/css/nice-select.css">
         <link rel="stylesheet" href="/assets/css/style.css">
+        <link rel="stylesheet" href="/public/Client/Css/style.css">
     </head>
 
     <body>
@@ -65,6 +66,7 @@
                                                 <li><a href="index.php">Trang chủ</a></li>
                                                 <li><a href="index.php?page=contact">Liên hệ</a></li>
                                                 <li><a href="index.php?page=product">Sản Phẩm</a></li>
+                                                <li><a href="index.php?page=blogs">Tin tức</a></li>
                                                 <li><a href="index.php?page=order">Đơn hàng</a></li>
 
                                             </ul>

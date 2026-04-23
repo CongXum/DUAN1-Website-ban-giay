@@ -144,13 +144,13 @@ class Blog
     }
 
     public function getLatest($limit = 3)
-{
-    $limit = (int)$limit;
-    $sql = "SELECT * FROM blogs ORDER BY id DESC LIMIT $limit";
-    $sth = $this->conn->prepare($sql);
-    $sth->execute();
-    return $sth->fetchAll(PDO::FETCH_ASSOC);
-}
+    {
+        $limit = (int)$limit;
+        $sql = "SELECT * FROM blogs ORDER BY id DESC LIMIT $limit";
+        $sth = $this->conn->prepare($sql);
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function countAll($status = null, $keyword = null)
     {
@@ -177,5 +177,42 @@ class Blog
         $stmt->execute();
 
         return $stmt->fetch()['total'];
+    }
+
+    public function getAllWithFilter($limit, $offset, $status = 1, $keyword = null, $category_id = null)
+    {
+        $sql = "SELECT blogs.*, blog_categories.name AS category_name
+            FROM blogs
+            LEFT JOIN blog_categories ON blogs.category_id = blog_categories.id
+            WHERE blogs.status = :status";
+
+        if (!empty($keyword)) {
+            $sql .= " AND blogs.title LIKE :keyword";
+        }
+
+        if (!empty($category_id)) {
+            $sql .= " AND blogs.category_id = :category_id";
+        }
+
+        $sql .= " ORDER BY blogs.id DESC LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(':status', $status, PDO::PARAM_INT);
+
+        if (!empty($keyword)) {
+            $stmt->bindValue(':keyword', "%$keyword%");
+        }
+
+        if (!empty($category_id)) {
+            $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+        }
+
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
