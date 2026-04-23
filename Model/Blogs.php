@@ -12,17 +12,22 @@ class Blog
     // Lấy tất cả bài viết
     public function getAll($limit, $offset, $status = null, $keyword = null)
     {
-        $sql = "SELECT * FROM blogs WHERE 1";
+        $sql = "SELECT blogs.*, blog_categories.name AS category_name
+            FROM blogs
+            LEFT JOIN blog_categories
+            ON blogs.category_id = blog_categories.id
+            WHERE 1";
 
         if ($status !== null) {
-            $sql .= " AND status = :status";
+            $sql .= " AND blogs.status = :status";
         }
 
         if (!empty($keyword)) {
-            $sql .= " AND title LIKE :keyword";
+            $sql .= " AND blogs.title LIKE :keyword";
         }
 
-        $sql .= " ORDER BY id DESC LIMIT :limit OFFSET :offset";
+        $sql .= " ORDER BY blogs.id DESC
+              LIMIT :limit OFFSET :offset";
 
         $stmt = $this->conn->prepare($sql);
 
@@ -39,7 +44,7 @@ class Blog
 
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     // Lấy 1 bài viết
     public function getOne($id)

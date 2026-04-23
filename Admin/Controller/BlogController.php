@@ -51,6 +51,14 @@ class BlogController
         // lấy dữ liệu
         $blogs = $this->blogModel->getAll($limit, $offset, $status, $keyword);
 
+        $categories = $this->categoryModel->getAll();
+
+        foreach ($categories as &$category) {
+
+            $category['blog_count'] =
+                $this->categoryModel->countBlogs($category['id']);
+        }
+
 
         require __DIR__ . '/../View/Modules/Blogs/Index.php';
     }
@@ -261,6 +269,96 @@ class BlogController
         ]);
 
         $_SESSION['success'] = "Cập nhật bài viết thành công";
+        header("Location: ?page=blogs");
+        exit;
+    }
+    // Tạo danh mục mới cho blog
+    public function categoryStore()
+    {
+        $name = trim($_POST['name'] ?? '');
+
+        if ($name === '') {
+            $_SESSION['error'] = "Tên danh mục không được để trống";
+            header("Location: ?page=blogs");
+            exit;
+        }
+
+        // chống duplicate
+        if ($this->categoryModel->existsName($name)) {
+            $_SESSION['error'] = "Danh mục đã tồn tại";
+            header("Location: ?page=blogs");
+            exit;
+        }
+
+        $this->categoryModel->create($name);
+
+        $_SESSION['success'] = "Thêm danh mục thành công";
+
+        header("Location: ?page=blogs");
+        exit;
+    }
+    // Cập nhật danh mục blog
+
+    public function categoryUpdate()
+    {
+        $id = (int)($_POST['id'] ?? 0);
+
+        if ($id <= 0) {
+            $_SESSION['error'] = "ID danh mục không hợp lệ";
+            header("Location: ?page=blogs");
+            exit;
+        }
+
+        $name = trim($_POST['name'] ?? '');
+
+        if ($name === '') {
+            $_SESSION['error'] = "Tên danh mục không được để trống";
+            header("Location: ?page=blogs");
+            exit;
+        }
+
+        // chống duplicate (trừ chính nó)
+        if ($this->categoryModel->existsNameExceptId($name, $id)) {
+
+            $_SESSION['error'] = "Danh mục đã tồn tại";
+
+            header("Location: ?page=blogs");
+            exit;
+        }
+
+        $this->categoryModel->update($id, $name);
+
+        $_SESSION['success'] = "Cập nhật danh mục thành công";
+
+        header("Location: ?page=blogs");
+        exit;
+    }
+    // Xóa danh mục blog
+    public function categoryDelete()
+    {
+        $id = (int)($_GET['id'] ?? 0);
+
+        if ($id <= 0) {
+            $_SESSION['error'] = "ID danh mục không hợp lệ";
+            header("Location: ?page=blogs");
+            exit;
+        }
+
+        $totalBlogs = $this->categoryModel->countBlogs($id);
+
+        if ($totalBlogs > 0) {
+
+            $_SESSION['error'] =
+                "Không thể xoá vì danh mục đang chứa $totalBlogs bài viết";
+
+            header("Location: ?page=blogs");
+            exit;
+        }
+
+        $this->categoryModel->delete($id);
+
+        $_SESSION['success'] = "Xóa danh mục thành công";
+
         header("Location: ?page=blogs");
         exit;
     }

@@ -155,6 +155,18 @@ include __DIR__ . '/View/Layouts/Sidebar.php';
         case 'view-blog':
             $blogController->show();
             break;
+        // blog categories
+        case 'create-blog-category':
+            $blogController->categoryStore();
+            break;
+
+        case 'update-blog-category':
+            $blogController->categoryUpdate();
+            break;
+
+        case 'delete-blog-category':
+            $blogController->categoryDelete();
+            break;
 
         // users
         case 'users':
