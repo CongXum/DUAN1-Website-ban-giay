@@ -71,21 +71,21 @@ class User
 
     // Đăng ký người dùng mới
     // Đăng ký người dùng mới
-public function register($name, $email, $password, $phone, $address)
-{
-    // Xóa cột 'role' và giá trị '0' ở đây
-    $sql = "INSERT INTO $this->table (name, email, password, phone, address) 
+    public function register($name, $email, $password, $phone, $address)
+    {
+        // Xóa cột 'role' và giá trị '0' ở đây
+        $sql = "INSERT INTO $this->table (name, email, password, phone, address) 
             VALUES (:name, :email, :password, :phone, :address)";
-    
-    $sth = $this->_connect->prepare($sql);
-    return $sth->execute([
-        ':name' => $name,
-        ':email' => $email,
-        ':password' => password_hash($password, PASSWORD_DEFAULT),
-        ':phone' => $phone,
-        ':address' => $address
-    ]);
-}
+
+        $sth = $this->_connect->prepare($sql);
+        return $sth->execute([
+            ':name' => $name,
+            ':email' => $email,
+            ':password' => password_hash($password, PASSWORD_DEFAULT),
+            ':phone' => $phone,
+            ':address' => $address
+        ]);
+    }
 
     // Lấy danh sách người dùng với phân trang
     public function getAllWithPagination($limit, $offset)
@@ -111,17 +111,16 @@ public function register($name, $email, $password, $phone, $address)
     // Khóa tài khoản
     public function lockAccount($id)
     {
-        $sql = "UPDATE $this->table SET status = 'locked' WHERE id = :id";
-        $sth = $this->_connect->prepare($sql);
-        return $sth->execute([':id' => $id]);
+        $sql = "UPDATE users SET status = 'locked' WHERE id = ?";
+        $stmt = $this->_connect->prepare($sql);
+        return $stmt->execute([$id]);
     }
 
-    // Mở khóa tài khoản
     public function unlockAccount($id)
     {
-        $sql = "UPDATE $this->table SET status = 'active' WHERE id = :id";
-        $sth = $this->_connect->prepare($sql);
-        return $sth->execute([':id' => $id]);
+        $sql = "UPDATE users SET status = 'active' WHERE id = ?";
+        $stmt = $this->_connect->prepare($sql);
+        return $stmt->execute([$id]);
     }
 
     // Cập nhật thông tin người dùng (không bao gồm password)

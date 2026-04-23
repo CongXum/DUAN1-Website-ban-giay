@@ -1,3 +1,6 @@
+<?php
+
+$page = $_GET['page'] ?? '';
 if ($page === 'create-product' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $title       = trim($_POST['title'] ?? '');
     $qty         = (int)($_POST['qty'] ?? 0);

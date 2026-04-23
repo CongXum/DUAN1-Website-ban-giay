@@ -88,9 +88,12 @@
                                         </div>
                                     </li>
                                     <li class="d-none d-lg-block">
-                                        <?php if (isset($_SESSION['user'])): ?>
+                                        <?php if (!empty($_SESSION['user'])): ?>
                                             <div class="header-btn-logged d-flex align-items-center">
-                                                <span class="mr-2">Chào, <strong><?php echo $_SESSION['user']['name']; ?></strong></span>
+                                                <span class="mr-2">
+                                                    Chào,
+                                                    <strong><?= htmlspecialchars($_SESSION['user']['name'] ?? 'User') ?></strong>
+                                                </span>
                                                 <a href="index.php?page=logout" class="logout-icon" title="Đăng xuất">
                                                     <i class="fas fa-sign-out-alt text-danger"></i>
                                                 </a>

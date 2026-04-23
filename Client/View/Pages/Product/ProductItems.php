@@ -160,7 +160,7 @@ if ($category_id > 0) {
                        class="btn btn-detail text-white flex-fill">
                       <i class="bi bi-eye me-1"></i>Xem
                     </a>
-                    <form method="post" action="index.php?page=cart&action=add" class="flex-fill">
+                    <form method="post" action="index.php?page=add-cart" class="flex-fill">
                       <input type="hidden" name="product_id" value="<?= $item['id'] ?>">
                       <button type="submit" class="btn btn-cart w-100"
                               <?= $item['qty'] <= 0 ? 'disabled' : '' ?>>

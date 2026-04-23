@@ -2217,3 +2217,26 @@ input:checked + .slider:before {
   border-radius: 6px;
   cursor: pointer;
 }
+.actions {
+    display: flex;
+    gap: 8px;              /* khoảng cách giữa nút */
+    align-items: center;
+}
+
+.actions a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+}
+
+.Products-status-inactive {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+.role-admin {
+    color: #5b79cb; /* xanh nước đậm vừa */
+    background-color: #e0ecff; /* nền xanh rất nhẹ */
+    font-weight: 600;
+}

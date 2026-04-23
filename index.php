@@ -49,6 +49,11 @@ switch ($page) {
         $cartController->update();
         exit;
 
+    case 'add-cart':
+        $cartController = new CartController($cartModel);
+        $cartController->add();
+        exit;
+        
     case 'delete-cart':
         $cartController = new CartController($cartModel);
         $cartController->delete();
@@ -131,8 +136,11 @@ switch ($page) {
         break;
 
     case 'contact':
+
         include __DIR__ . '/Client/View/Pages/Contact.php';
+
     case 'product':
+
     case 'product-items':
         // Gọi hàm getAll() từ class Product để lấy danh sách giày
         $dssp = $product->getAll();
@@ -140,6 +148,7 @@ switch ($page) {
         break;
 
     case 'detail':
+
     case 'product-detail':
         // Lấy ID từ URL (ví dụ: index.php?page=detail&id=5)
         $id = isset($_GET['id']) ? $_GET['id'] : 0;

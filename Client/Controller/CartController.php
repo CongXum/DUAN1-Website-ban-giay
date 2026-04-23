@@ -2,29 +2,30 @@
 
 class CartController
 {
-
     protected $cartModel;
+
+    private function getUserId()
+    {
+        if (!isset($_SESSION['user']['id'])) {
+            header("Location: index.php?page=login");
+            exit;
+        }
+
+        return (int) $_SESSION['user']['id'];
+    }
 
     public function __construct($cartModel)
     {
         $this->cartModel = $cartModel;
     }
 
-    // THÊM GIỎ HÀNG
+    // ✅ THÊM GIỎ HÀNG
     public function add()
     {
-        $user_id = $_SESSION['user']['id'] ?? null;
-
-
-        if (!$user_id) {
-            header("Location: login.php");
-            exit;
-        }
-
-        $qty = $_POST['qty'] ?? 1;
+        $user_id = $this->getUserId();
 
         $product_id = $_POST['product_id'] ?? $_GET['id'] ?? null;
-        $qty = $_POST['qty'] ?? 1;
+        $qty = (int)($_POST['qty'] ?? 1);
 
         if ($product_id) {
             $this->cartModel->addToCart($user_id, $product_id, $qty);
@@ -34,9 +35,10 @@ class CartController
         exit;
     }
 
+    // ✅ UPDATE GIỎ HÀNG (FIX CHUẨN)
     public function update()
     {
-        $user_id = $_SESSION['user']['id'];
+        $user_id = $this->getUserId();
 
         if (!isset($_POST['qty'])) {
             header("Location: index.php?page=cart");
@@ -47,9 +49,9 @@ class CartController
             $qty = (int)$qty;
 
             if ($qty > 0) {
-                $this->cartModel->update($qty, $id, $user_id);
+                $this->cartModel->update($qty, $id, $user_id); // ✅ FIX
             } else {
-                $this->cartModel->delete($id); // cũng nên thêm user_id
+                $this->cartModel->delete($id, $user_id); // ✅ FIX
             }
         }
 
@@ -57,42 +59,35 @@ class CartController
         exit;
     }
 
-    // HIỂN THỊ GIỎ HÀNG
+    // ✅ HIỂN THỊ GIỎ HÀNG
     public function index()
     {
+        $user_id = $this->getUserId();
 
-        $user_id = $_SESSION['user']['id'];
-
-
-
-
-        // DELETE
         if (isset($_GET['delete'])) {
-            $this->cartModel->delete($_GET['delete']);
+            $this->cartModel->delete((int)$_GET['delete'], $user_id); // ✅ FIX
         }
 
         $cartItems = $this->cartModel->getAll($user_id);
+        $total = $this->cartModel->getTotal($user_id);
 
         require "Client/View/Pages/Cart.php";
     }
 
+    // ✅ XÓA 1 ITEM
     public function delete()
     {
+        $user_id = $this->getUserId();
+
         if (!isset($_GET['id'])) {
             die('Thiếu id');
         }
 
         $id = (int)$_GET['id'];
 
-        // Xóa trong DB
-        $this->cartModel->delete($id);
+        $this->cartModel->delete($id, $user_id); // ✅ FIX
 
-        // Redirect lại giỏ hàng
         header("Location: index.php?page=cart");
         exit;
     }
-
-    
-
-    
 }

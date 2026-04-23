@@ -24,11 +24,11 @@ class Cart
     }
 
     // ✅ Lấy 1 item
-    public function getOne($id)
+    public function getOne($id, $user_id)
     {
-        $sql = "SELECT * FROM $this->table WHERE id = ?";
+        $sql = "SELECT * FROM $this->table WHERE id = ? AND user_id = ?";
         $sth = $this->_connect->prepare($sql);
-        $sth->execute([$id]);
+        $sth->execute([$id, $user_id]);
         return $sth->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -70,11 +70,11 @@ class Cart
     }
 
     // ✅ Xóa 1 sản phẩm
-    public function delete($id)
+    public function delete($id, $user_id)
     {
-        $sql = "DELETE FROM $this->table WHERE id = ?";
+        $sql = "DELETE FROM $this->table WHERE id = ? AND user_id = ?";
         $stmt = $this->_connect->prepare($sql);
-        return $stmt->execute([$id]);
+        return $stmt->execute([$id, $user_id]);
     }
 
     // ✅ Xóa toàn bộ giỏ hàng theo user
