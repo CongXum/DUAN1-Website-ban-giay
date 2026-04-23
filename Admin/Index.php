@@ -7,10 +7,12 @@ $page = $_GET['page'] ?? 'dashboard';
 require_once __DIR__ . '/../Model/Database.php';
 require_once __DIR__ . '/../Model/Product.php';
 require_once __DIR__ . '/../Model/Category.php'; // Đã thêm
+require_once __DIR__ . '/../Model/User.php'; // Thêm User model
 
 // 2. Require các Controller
 require_once __DIR__ . '/Controller/ProductController.php';
 require_once __DIR__ . '/Controller/CategoryController.php'; // Đã thêm
+require_once __DIR__ . '/Controller/UserController.php'; // Thêm User controller
 
 // 3. Khởi tạo kết nối Database
 $db = new Database();
@@ -23,6 +25,10 @@ $productController = new ProductController($productModel);
 // 5. Khởi tạo Model và Controller cho Danh mục
 $categoryModel = new Category($conn);
 $categoryController = new CategoryController($categoryModel);
+
+// 6. Khởi tạo Model và Controller cho Người dùng
+$userModel = new User($conn);
+$userController = new UserController($userModel);
 
 // 6. Giao diện Header & Sidebar
 include __DIR__ . '/View/layouts/Header.php';
@@ -65,6 +71,35 @@ switch($page){
 
     case 'category-delete':
         $categoryController->delete();
+        break;
+
+    // ================= QUẢN LÝ NGƯỜI DÙNG =================
+    case 'users':
+        $userController->index();
+        break;
+
+    case 'user-create':
+        $userController->create();
+        break;
+
+    case 'user-edit':
+        $userController->edit();
+        break;
+
+    case 'user-delete':
+        $userController->delete();
+        break;
+
+    case 'user-lock':
+        $userController->lock();
+        break;
+
+    case 'user-unlock':
+        $userController->unlock();
+        break;
+
+    case 'user-view':
+        $userController->view();
         break;
 
     // ================= MẶC ĐỊNH =================

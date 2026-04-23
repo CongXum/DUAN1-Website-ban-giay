@@ -52,10 +52,18 @@ switch ($page) {
         include 'Client/View/Pages/Product/ProductCategories.php';
         break;
 
+    case 'product':
     case 'product-items':
-        include 'Client/View/Pages/Product/ProductItems.php';
+        // Gọi hàm getAll() từ class Product để lấy danh sách giày
+        $dssp = $product->getAll();
+        include __DIR__ . '/Client/View/Pages/Product/ProductItems.php';
         break;
+
     case 'detail':
+    case 'product-detail':
+        // Lấy ID từ URL (ví dụ: index.php?page=detail&id=5)
+        $id = isset($_GET['id']) ? $_GET['id'] : 0;
+        $sp_detail = $product->getOne($id);
         include __DIR__ . '/Client/View/Pages/Product/DetailProduct.php';
         break;
     case 'order':

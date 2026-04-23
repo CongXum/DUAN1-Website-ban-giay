@@ -8,7 +8,7 @@
 
             <div class="Products-actions">
 
-                <a href="?page=update-user&id=<?= $_GET['id'] ?>"
+                <a href="?page=user-edit&id=<?= $_GET['id'] ?>"
                     class="Products-btn-edit">
 
                     <i class="fa fa-pen"></i>
@@ -36,11 +36,11 @@
                     src="https://via.placeholder.com/120"
                     class="User-avatar-large">
 
-                <h5>Nguyễn Văn A</h5>
+                <h5><?= htmlspecialchars($user['name']) ?></h5>
 
                 <span class="Products-status Products-status-active">
 
-                    Admin
+                    <?= isset($user['role']) ? ucfirst(htmlspecialchars($user['role'])) : 'User' ?>
 
                 </span>
 
@@ -55,7 +55,7 @@
 
                     <label>ID</label>
 
-                    <p><?= $_GET['id'] ?></p>
+                    <p><?= $user['id'] ?></p>
 
                 </div>
 
@@ -64,7 +64,7 @@
 
                     <label>Email</label>
 
-                    <p>admin@gmail.com</p>
+                    <p><?= htmlspecialchars($user['email']) ?></p>
 
                 </div>
 
@@ -73,7 +73,7 @@
 
                     <label>Số điện thoại</label>
 
-                    <p>0909999999</p>
+                    <p><?= htmlspecialchars($user['phone'] ?? 'Chưa cập nhật') ?></p>
 
                 </div>
 
@@ -82,13 +82,13 @@
 
                     <label>Địa chỉ</label>
 
-                    <p>Cần Thơ</p>
+                    <p><?= htmlspecialchars($user['address'] ?? 'Chưa cập nhật') ?></p>
 
                 </div>
                 <div class="User-info-item">
                     <label>Vai trò</label>
                     <span class="Admin-role-badge Admin-role-admin">
-                        Admin
+                        <?= isset($user['role']) ? ucfirst(htmlspecialchars($user['role'])) : 'User' ?>
                     </span>
                 </div>
 
@@ -96,11 +96,23 @@
 
                     <label>Trạng thái</label>
 
-                    <span class="Products-status Products-status-active">
+                    <?php if (isset($user['status']) && $user['status'] === 'locked'): ?>
 
-                        Hoạt động
+                        <span class="Products-status Products-status-inactive">
 
-                    </span>
+                            Đã khóa
+
+                        </span>
+
+                    <?php else: ?>
+
+                        <span class="Products-status Products-status-active">
+
+                            Hoạt động
+
+                        </span>
+
+                    <?php endif; ?>
 
                 </div>
 
@@ -109,7 +121,7 @@
 
                     <label>Ngày tạo</label>
 
-                    <p>01/04/2026</p>
+                    <p><?= isset($user['created_at']) ? date('d/m/Y', strtotime($user['created_at'])) : 'N/A' ?></p>
 
                 </div>
 
