@@ -142,6 +142,16 @@ class Blog
         $stmt->execute([$title, $id]);
         return $stmt->fetch() ? true : false;
     }
+
+    public function getLatest($limit = 3)
+    {
+        $sql = "SELECT * FROM blogs ORDER BY id DESC LIMIT ?";
+        $sth = $this->conn->prepare($sql);
+        $sth->bindValue(1, (int)$limit, PDO::PARAM_INT);
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function countAll($status = null, $keyword = null)
     {
         $sql = "SELECT COUNT(*) as total FROM blogs WHERE 1";
