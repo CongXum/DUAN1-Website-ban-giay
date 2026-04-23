@@ -97,4 +97,36 @@ class Comment
         $sql = "UPDATE $this->table SET is_deleted=1 WHERE id=?";
         return $this->conn->prepare($sql)->execute([$id]);
     }
+
+    // ======================
+    // CLIENT: CREATE COMMENT
+    // ======================
+    public function create($user_id, $product_id, $content)
+    {
+        $sql = "INSERT INTO comments (user_id, product_id, content, status, is_deleted, created_at)
+            VALUES (?, ?, ?, 'pending', 0, NOW())";
+
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([$user_id, $product_id, $content]);
+    }
+
+
+    // ======================
+    // CLIENT: GET COMMENTS BY PRODUCT (ONLY APPROVED)
+    // ======================
+    public function getByProduct($product_id)
+    {
+        $sql = "SELECT c.*, u.name AS user_name
+            FROM comments c
+            JOIN users u ON c.user_id = u.id
+            WHERE c.product_id = ?
+            AND c.status = 'approved'
+            AND c.is_deleted = 0
+            ORDER BY c.created_at DESC";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$product_id]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
