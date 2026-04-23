@@ -30,6 +30,26 @@
     endif; ?>
 </script>
 
+<script>
+    function previewThumbnail(event) {
+        const input = event.target;
+
+        if (!input.files.length) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const preview = document.getElementById('preview-thumbnail');
+
+            preview.src = e.target.result;
+
+            preview.style.display = 'block';
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+</script>
+
 </body>
 
 </html>

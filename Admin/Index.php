@@ -76,6 +76,7 @@ include __DIR__ . '/View/Layouts/Sidebar.php';
     // =======================
     switch ($page) {
 
+        // products
         case 'products':
             include 'View/Modules/Products/Index.php';
             break;
@@ -96,6 +97,7 @@ include __DIR__ . '/View/Layouts/Sidebar.php';
             $productController->delete();
             break;
 
+        // categories
         case 'categories':
             include 'View/Modules/Categories/Index.php';
             break;
@@ -116,6 +118,7 @@ include __DIR__ . '/View/Layouts/Sidebar.php';
             $categoryController->delete();
             break;
 
+        // orders
         case 'orders':
             (new OrderController($conn))->index();
             break;
@@ -128,6 +131,7 @@ include __DIR__ . '/View/Layouts/Sidebar.php';
             (new OrderController($conn))->updateStatus();
             break;
 
+        // blogs
         case 'blogs':
             $blogController->index();
             break;
@@ -152,6 +156,7 @@ include __DIR__ . '/View/Layouts/Sidebar.php';
             $blogController->show();
             break;
 
+        // users
         case 'users':
             $userController->index();
             break;
@@ -180,6 +185,12 @@ include __DIR__ . '/View/Layouts/Sidebar.php';
             $userController->unlock();
             break;
 
+        // settings
+        case 'settings':
+            include 'View/Modules/Settings/Index.php';
+            break;
+
+        // default dashboard
         default:
             include 'View/Modules/Dashboard/Index.php';
             break;

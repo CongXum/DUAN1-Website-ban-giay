@@ -152,26 +152,24 @@
 
         <!-- PAGINATION -->
 
-        <div class="Blog-pagination">
+        <?php if ($totalPage > 1): ?>
 
-            <?php $totalPage = 5;
-            for ($i = 1; $i <= $totalPage; $i++): ?>
+            <div class="Blog-pagination">
 
-                <a
-                    href="?page=blogs
-                    &p=<?= $i ?>
-                    &keyword=<?= $_GET['keyword'] ?? '' ?>
-                    &status=<?= $_GET['status'] ?? '' ?>"
-                    class="Blog-page-btn
-                    <?= ($_GET['p'] ?? 1) == $i ? 'active' : '' ?>">
+                <?php for ($i = 1; $i <= $totalPage; $i++): ?>
 
-                    <?= $i ?>
+                    <a href="?page=blogs&p=<?= $i ?>&keyword=<?= $_GET['keyword'] ?? '' ?>&status=<?= $_GET['status'] ?? '' ?>"
+                        class="Blog-page-btn <?= ($currentPage == $i) ? 'active' : '' ?>">
 
-                </a>
+                        <?= $i ?>
 
-            <?php endfor; ?>
+                    </a>
 
-        </div>
+                <?php endfor; ?>
+
+            </div>
+
+        <?php endif; ?>
 
 
     </div>

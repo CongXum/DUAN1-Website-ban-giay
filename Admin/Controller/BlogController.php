@@ -11,12 +11,20 @@ class BlogController
         $this->categoryModel = $categoryModel;
     }
 
+
+
     // Danh sách bài viết với phân trang, lọc trạng thái và tìm kiếm
     public function index()
     {
-        $pageNum = $_GET['p'] ?? 1;
+        $currentPage = $_GET['p'] ?? 1;
+
+        if ($currentPage < 1) {
+            $currentPage = 1;
+        }
+
         $limit = 10;
-        $offset = ($pageNum - 1) * $limit;
+
+        $offset = ($currentPage - 1) * $limit;
 
         $status = (isset($_GET['status']) && $_GET['status'] !== '')
             ? (int)$_GET['status']
@@ -24,7 +32,25 @@ class BlogController
 
         $keyword = $_GET['keyword'] ?? null;
 
+
+        // lấy tổng record
+        $totalRecord = $this->blogModel->countAll($status, $keyword);
+
+
+        // tính tổng page
+        $totalPage = ceil($totalRecord / $limit);
+
+
+        // nếu vượt page thì quay về page cuối
+        if ($currentPage > $totalPage && $totalPage > 0) {
+            $currentPage = $totalPage;
+            $offset = ($currentPage - 1) * $limit;
+        }
+
+
+        // lấy dữ liệu
         $blogs = $this->blogModel->getAll($limit, $offset, $status, $keyword);
+
 
         require __DIR__ . '/../View/Modules/Blogs/Index.php';
     }
@@ -66,6 +92,9 @@ class BlogController
             header("Location: ?page=blogs");
             exit;
         }
+
+        // Tăng lượt xem
+        $this->blogModel->incrementViews($id);
 
         $blog = $this->blogModel->getOne($id);
 
@@ -198,7 +227,10 @@ class BlogController
         }
 
         if (!empty($errors)) {
-            $_SESSION['error'] = implode(', ', $errors);
+
+            $_SESSION['form_errors'] = $errors;
+            $_SESSION['old'] = $post;
+
             header("Location: ?page=update-blog&id=$id");
             exit;
         }

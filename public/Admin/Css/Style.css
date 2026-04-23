@@ -1553,7 +1553,6 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 
-  display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 
@@ -2218,17 +2217,17 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 .actions {
-    display: flex;
-    gap: 8px;              /* khoảng cách giữa nút */
-    align-items: center;
+  display: flex;
+  gap: 8px; /* khoảng cách giữa nút */
+  align-items: center;
 }
 
 .actions a {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 36px;
-    height: 36px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
 }
 
 .Products-status-inactive {
@@ -2236,7 +2235,7 @@ input:checked + .slider:before {
   color: #ef4444;
 }
 .role-admin {
-    color: #5b79cb; /* xanh nước đậm vừa */
-    background-color: #e0ecff; /* nền xanh rất nhẹ */
-    font-weight: 600;
+  color: #5b79cb; /* xanh nước đậm vừa */
+  background-color: #e0ecff; /* nền xanh rất nhẹ */
+  font-weight: 600;
 }

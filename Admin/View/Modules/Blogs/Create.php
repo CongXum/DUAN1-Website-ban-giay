@@ -103,7 +103,14 @@ $old = $_SESSION['old'] ?? [];
 
                     <input type="file"
                         name="thumbnail"
-                        class="Blog-input">
+                        class="Blog-input"
+                        accept="image/*"
+                        onchange="previewThumbnail(event)">
+
+                    <br>
+
+                    <img id="preview-thumbnail"
+                        style="width:150px; margin-top:10px; display:none;">
 
                     <?php if (!empty($errors['thumbnail'])): ?>
                         <small style="color:red;"><?= $errors['thumbnail'] ?></small>
