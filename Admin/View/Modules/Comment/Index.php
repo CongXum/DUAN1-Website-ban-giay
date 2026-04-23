@@ -1,76 +1,134 @@
-<div class="comment-card-box">
+<div class="Comment-card-box">
 
-    <div class="comment-header">
+    <div class="Comment-header">
         <h4>Quản lý bình luận</h4>
     </div>
 
-    <div class="comment-toolbar">
+    <div class="Comment-toolbar">
 
-        <form class="comment-filter-form">
+        <form method="GET">
+
+            <input type="hidden" name="page" value="comments">
 
             <input
                 type="text"
-                class="comment-search-input"
-                placeholder="Tìm nội dung bình luận...">
+                name="keyword"
+                value="<?= $_GET['keyword'] ?? '' ?>"
+                placeholder="Tìm tên người dùng">
 
-            <button class="comment-btn-filter">
-                <i class="fa fa-search"></i>
-                Lọc
-            </button>
+            <select name="status">
+
+                <option value="">--Trạng thái--</option>
+
+                <option value="pending">Chờ duyệt</option>
+
+                <option value="approved">Đã duyệt</option>
+
+                <option value="rejected">Từ chối</option>
+
+            </select>
+
+            <button>Lọc</button>
 
         </form>
 
     </div>
 
 
-    <table class="comment-table">
+    <table class="Comment-table">
 
         <thead>
             <tr>
-                <th>ID</th>
+                <th>STT</th>
+                <th>Người bình luận</th>
+                <th>Sản phẩm</th>
                 <th>Nội dung</th>
+                <th>Trạng thái</th>
                 <th>Hành động</th>
             </tr>
         </thead>
 
         <tbody>
 
-            <tr>
+            <?php $i = ($page - 1) * $limit + 1; ?>
 
-                <td class="comment-id">1</td>
+            <?php foreach ($comments as $c): ?>
 
-                <td class="comment-content">
-                    Sản phẩm đẹp, giao hàng nhanh, đóng gói chắc chắn 👍
-                </td>
+                <tr>
 
-                <td>
+                    <td><?= $i++ ?></td>
 
-                    <div class="comment-actions">
+                    <td><?= $c['user_name'] ?? 'User đã xoá' ?></td>
 
-                        <a class="comment-btn-view">
-                            <i class="fa fa-eye"></i>
+                    <td><?= $c['product_title'] ?? 'Sản phẩm đã xoá' ?></td>
+
+                    <td><?= htmlspecialchars($c['content']) ?></td>
+
+                    <td>
+
+                        <?php if ($c['status'] == 'approved'): ?>
+
+                            <span class="badge bg-success">Đã duyệt</span>
+
+                        <?php elseif ($c['status'] == 'pending'): ?>
+
+                            <span class="badge bg-warning">Chờ duyệt</span>
+
+                        <?php else: ?>
+
+                            <span class="badge bg-danger">Từ chối</span>
+
+                        <?php endif ?>
+
+                    </td>
+
+                    <td>
+
+                        <a href="?page=approve-comment&id=<?= $c['id'] ?>"
+                            class="btn btn-success btn-sm">
+
+                            <i class="bi bi-check-circle"></i>
+
                         </a>
 
-                        <button class="comment-btn-delete">
-                            <i class="fa fa-trash"></i>
-                        </button>
+                        <a href="?page=reject-comment&id=<?= $c['id'] ?>"
+                            class="btn btn-warning btn-sm">
 
-                    </div>
+                            <i class="bi bi-x-circle"></i>
 
-                </td>
+                        </a>
 
-            </tr>
+                        <a href="?page=delete-comment&id=<?= $c['id'] ?>"
+                            class="btn btn-danger btn-sm"
+                            onclick="return confirm('Bạn chắc chắn muốn xoá?')">
+
+                            <i class="bi bi-trash"></i>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            <?php endforeach ?>
 
         </tbody>
 
     </table>
 
 
-    <div class="comment-pagination">
+    <div class="Comment-pagination">
 
-        <a class="comment-page-btn active">1</a>
-        <a class="comment-page-btn">2</a>
-        <a class="comment-page-btn">3</a>
+        <?php for ($p = 1; $p <= $totalPages; $p++): ?>
+
+            <a class="<?= $p == $page ? 'active' : '' ?>"
+                href="?page=comments&p=<?= $p ?>&keyword=<?= $keyword ?>&status=<?= $status ?>"
+
+                <?= $p ?>
+
+                </a>
+
+            <?php endfor ?>
 
     </div>
 

@@ -74,7 +74,7 @@
 
                     <th>ID</th>
                     <th>Ảnh</th>
-                    <th style="width: 10px;">Tiêu đề</th>
+                    <th style="width: 20%;">Tiêu đề</th>
                     <th style="width: auto;">Mô tả</th>
                     <th>Danh mục</th>
                     <th>Trạng thái</th>

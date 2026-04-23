@@ -15,6 +15,7 @@ require_once __DIR__ . '/../Model/Blogs.php';
 require_once __DIR__ . '/../Model/BlogCategory.php';
 require_once __DIR__ . '/../Model/User.php';
 require_once __DIR__ . '/../Model/Dashboard.php';
+require_once __DIR__ . '/../Model/Comment.php';
 
 // =======================
 // LOAD CONTROLLERS
@@ -25,7 +26,7 @@ require_once __DIR__ . '/Controller/OrderController.php';
 require_once __DIR__ . '/Controller/BlogController.php';
 require_once __DIR__ . '/Controller/UserController.php';
 require_once __DIR__ . '/Controller/DashboardController.php';
-
+require_once __DIR__ . '/Controller/CommentController.php';
 // =======================
 // CONNECT DB
 // =======================
@@ -202,6 +203,23 @@ include __DIR__ . '/View/Layouts/Sidebar.php';
         // settings
         case 'settings':
             include 'View/Modules/Settings/Index.php';
+            break;
+
+        // comments
+        case 'comments':
+            (new CommentController($conn))->index();
+            break;
+
+        case 'approve-comment':
+            (new CommentController($conn))->approve();
+            break;
+
+        case 'reject-comment':
+            (new CommentController($conn))->reject();
+            break;
+
+        case 'delete-comment':
+            (new CommentController($conn))->delete();
             break;
 
         // default dashboard
